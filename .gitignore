@@ -22,3 +22,17 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+# Archivos compilados de Java
+*.class
+bin/
+
+# Configuración local y metadatos de Eclipse
+.metadata/
+.settings/
+.classpath
+.project
+
+# Archivos de otros IDEs (por si algún compañero usa IntelliJ)
+.idea/
+*.iml
