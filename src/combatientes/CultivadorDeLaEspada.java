@@ -1,19 +1,18 @@
 package combatientes;
 
 public class CultivadorDeLaEspada extends Combatiente {
-    public CultivadorDeLaEspada(int id, String nombre) { super(id, nombre); }
+    private static final double MULTIPLICADOR_DANIO = 1.25; // +25% al daño producido
 
-    @Override
-    public int calcularDanio(int danioBase) {
-        return (int) (danioBase * 1.2) + equipamientos.stream().mapToInt(Equipamiento::getBonusDanio).sum();
+    public CultivadorDeLaEspada(int id, String nombre) {
+        super(id, nombre);
+    }
+
+    public CultivadorDeLaEspada(int id, String nombre, int vidaBase, int energiaBase) {
+        super(id, nombre, vidaBase, energiaBase);
     }
 
     @Override
-    public int recibirDanio(int danioEntrante) {
-        int reduccion = equipamientos.stream().mapToInt(Equipamiento::getReduccionDanio).sum();
-        return Math.max(0, danioEntrante - reduccion);
+    protected int aplicarPotenciacionPorEspecialidad(int danio) {
+        return (int) Math.round(danio * MULTIPLICADOR_DANIO);
     }
-
-    @Override
-    public int calcularCostoEnergia(int costoBase) { return costoBase; }
 }

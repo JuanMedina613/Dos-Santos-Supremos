@@ -1,5 +1,23 @@
 package equipamiento;
 
-public class SelloDelFenix {
+public class SelloDelFenix extends Equipamiento {
+    private static final int BONO_VIDA_DEFECTO = 30;
+    private final int bonoVidaMaxima;
 
+    public SelloDelFenix() {
+        this(BONO_VIDA_DEFECTO);
+    }
+
+    public SelloDelFenix(int bonoVidaMaxima) {
+        super("Sello del Fénix", CategoriaEquipamiento.SELLO);
+        if (bonoVidaMaxima <= 0) {
+            throw new IllegalArgumentException("El bono de vida máxima debe ser positivo.");
+        }
+        this.bonoVidaMaxima = bonoVidaMaxima;
+    }
+
+    @Override
+    public int getBonoVidaMaxima() {
+        return bonoVidaMaxima;
+    }
 }
