@@ -7,10 +7,6 @@ public class MonjeDelCuerpoCelestial extends Combatiente {
         super(id, nombre);
     }
 
-    public MonjeDelCuerpoCelestial(int id, String nombre, int vidaBase, int energiaBase) {
-        super(id, nombre, vidaBase, energiaBase);
-    }
-
     @Override
     protected int aplicarReduccionPorEspecialidad(int danioEntrante) {
         return (int) Math.round(danioEntrante * FACTOR_REDUCCION);

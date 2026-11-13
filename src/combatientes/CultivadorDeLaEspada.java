@@ -7,10 +7,6 @@ public class CultivadorDeLaEspada extends Combatiente {
         super(id, nombre);
     }
 
-    public CultivadorDeLaEspada(int id, String nombre, int vidaBase, int energiaBase) {
-        super(id, nombre, vidaBase, energiaBase);
-    }
-
     @Override
     protected int aplicarPotenciacionPorEspecialidad(int danio) {
         return (int) Math.round(danio * MULTIPLICADOR_DANIO);
