@@ -1,12 +1,7 @@
 package equipamiento;
 
 public class ArmaduraDorada extends Equipamiento {
-    private static final int REDUCCION_DANIO_DEFECTO = 8;
     private final int reduccionDanio;
-
-    public ArmaduraDorada() {
-        this(REDUCCION_DANIO_DEFECTO);
-    }
 
     public ArmaduraDorada(int reduccionDanio) {
         super("Armadura Dorada", CategoriaEquipamiento.ARMADURA);

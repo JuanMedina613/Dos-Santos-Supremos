@@ -1,12 +1,7 @@
 package equipamiento;
 
 public class AnilloEspiritual extends Equipamiento {
-    private static final int BONO_ENERGIA_DEFECTO = 20;
     private final int bonoEnergiaMaxima;
-
-    public AnilloEspiritual() {
-        this(BONO_ENERGIA_DEFECTO);
-    }
 
     public AnilloEspiritual(int bonoEnergiaMaxima) {
         super("Anillo Espiritual", CategoriaEquipamiento.ANILLO);

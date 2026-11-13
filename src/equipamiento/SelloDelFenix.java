@@ -1,12 +1,7 @@
 package equipamiento;
 
 public class SelloDelFenix extends Equipamiento {
-    private static final int BONO_VIDA_DEFECTO = 30;
     private final int bonoVidaMaxima;
-
-    public SelloDelFenix() {
-        this(BONO_VIDA_DEFECTO);
-    }
 
     public SelloDelFenix(int bonoVidaMaxima) {
         super("Sello del Fénix", CategoriaEquipamiento.SELLO);
