@@ -3,10 +3,13 @@ package combatientes;
 import equipamiento.CategoriaEquipamiento;
 import equipamiento.Equipamiento;
 import excepciones.ReglaEquipamientoException;
+import tecnicas.Tecnica;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public abstract class Combatiente {
@@ -14,6 +17,7 @@ public abstract class Combatiente {
     public static final int ENERGIA_BASE_POR_DEFECTO = 40;
     public static final int DANIO_ATAQUE_BASICO = 15;
     public static final int MAX_EQUIPAMIENTOS = 3;
+    public static final int USOS_MAXIMOS_TECNICA = 5;
 
     private final int id;
     private final String nombre;
@@ -27,116 +31,145 @@ public abstract class Combatiente {
     private int reduccionDanioCombate;
 
     private final List<Equipamiento> equipamientos;
+    private final Map<Tecnica, Integer> usosPorTecnica;
 
+    // Constructor único y limpio (el ID lo provee el CreadorCombatientes)
     public Combatiente(int id, String nombre) {
-        this(id, nombre, VIDA_BASE_POR_DEFECTO, ENERGIA_BASE_POR_DEFECTO);
-    }
-
-    public Combatiente(int id, String nombre, int vidaBaseMaxima, int energiaBaseMaxima) {
         if (nombre == null || nombre.isBlank()) {
-            throw new IllegalArgumentException("El nombre del combatiente no puede estar vacío.");
-        }
-        if (vidaBaseMaxima <= 0 || energiaBaseMaxima < 0) {
-            throw new IllegalArgumentException("Valores base de vida o energía inválidos.");
+            throw new IllegalArgumentException("El nombre del combatiente no puede estar vacio.");
         }
         this.id = id;
         this.nombre = nombre;
-        this.vidaBaseMaxima = vidaBaseMaxima;
-        this.energiaBaseMaxima = energiaBaseMaxima;
-        this.vidaActual = vidaBaseMaxima;
-        this.energiaActual = energiaBaseMaxima;
+        this.vidaBaseMaxima = VIDA_BASE_POR_DEFECTO;
+        this.energiaBaseMaxima = ENERGIA_BASE_POR_DEFECTO;
+        this.vidaActual = VIDA_BASE_POR_DEFECTO;
+        this.energiaActual = ENERGIA_BASE_POR_DEFECTO;
         this.reduccionDanioCombate = 0;
         this.equipamientos = new ArrayList<>();
+        this.usosPorTecnica = new LinkedHashMap<>();
     }
 
-    // --- GESTIÓN DE EQUIPAMIENTO ---
+    // ACA VAMOS A MANERJAR LAS TECNICAS GESTIÓN DE TECNICAS
+
+    public void aprenderTecnica(Tecnica tecnica) {
+        Objects.requireNonNull(tecnica, "La técnica no puede ser nula.");
+        usosPorTecnica.putIfAbsent(tecnica, USOS_MAXIMOS_TECNICA);
+    }
+
+    public int getUsosRestantes(Tecnica tecnica) {
+        return usosPorTecnica.getOrDefault(tecnica, 0);
+    }
+
+    public void consumirUsoTecnica(Tecnica tecnica) {
+ 
+        if (getUsosRestantes(tecnica) <= 0) {
+            throw new IllegalStateException("No quedan usos disponibles para la técnica: " + tecnica.getNombre());
+        }
+        usosPorTecnica.put(tecnica, getUsosRestantes(tecnica) - 1);
+    }
+
+    public List<Tecnica> getTecnicasDisponibles() {
+        return new ArrayList<>(usosPorTecnica.keySet());
+    }
+
+    // ACA VAMOS A HACER LA GESTION DEL EQUIPAMIENTO
 
     public void equipar(Equipamiento nuevoEquipamiento) {
-        Objects.requireNonNull(nuevoEquipamiento, "El equipamiento no puede ser nulo.");
+    	if (nuevoEquipamiento == null) {
+            throw new IllegalArgumentException("El equipamiento no puede ser nulo.");
+        }
 
         if (equipamientos.size() >= MAX_EQUIPAMIENTOS) {
-            throw new ReglaEquipamientoException(
-                "No se pueden llevar más de " + MAX_EQUIPAMIENTOS + " equipamientos."
-            );
+            throw new ReglaEquipamientoException("No se pueden llevar mas de " + MAX_EQUIPAMIENTOS + " equipamientos.");
         }
 
-        boolean categoriaRepetida = equipamientos.stream()
-                .anyMatch(e -> e.getCategoria() == nuevoEquipamiento.getCategoria());
-
-        if (categoriaRepetida) {
-            throw new ReglaEquipamientoException(
-                "El combatiente ya posee un equipamiento de la categoría: " + nuevoEquipamiento.getCategoria()
-            );
+        for (Equipamiento equipoPuesto : equipamientos) {
+            if (equipoPuesto.getCategoria() == nuevoEquipamiento.getCategoria()) {
+                throw new ReglaEquipamientoException("El combatiente ya posee un equipamiento de la categoria: " + nuevoEquipamiento.getCategoria());
+            }
         }
-
-        // Equipar un objeto que aumenta un máximo NO aumenta el valor actual
         equipamientos.add(nuevoEquipamiento);
     }
 
     public void quitarEquipamiento(Equipamiento equipamiento) {
-        Objects.requireNonNull(equipamiento, "El equipamiento a quitar no puede ser nulo.");
-
-        boolean eliminado = equipamientos.remove(equipamiento);
-        if (!eliminado) {
-            throw new ReglaEquipamientoException("El combatiente no lleva puesto ese equipamiento.");
+    	if (equipamiento == null) {
+            throw new IllegalArgumentException("El equipamiento a quitar no puede ser nulo.");
         }
 
-        // Al quitarlo, el valor actual se recorta al nuevo máximo si lo supera
-        recortarEstadisticasAlMaximo();
+    	if (!equipamientos.contains(equipamiento)) {
+            throw new ReglaEquipamientoException("El combatiente no lleva puesto ese equipamiento.");
+        }
+    	
+    	equipamientos.remove(equipamiento);
+    	
+        recortarEstadisticasAlMaximo(); /// ESTO LO DEJO PERO HABRIA QUE VERLO A DETALLE - KEVIN!! POSIBLEMENTA TAMBIEN ARI Y TAIEL
     }
 
     public void quitarEquipamientoPorCategoria(CategoriaEquipamiento categoria) {
-        Equipamiento encontrado = equipamientos.stream()
-                .filter(e -> e.getCategoria() == categoria)
-                .findFirst()
-                .orElseThrow(() -> new ReglaEquipamientoException(
-                    "No lleva equipamiento de la categoría: " + categoria
-                ));
+        Equipamiento encontrado = null;
+
+        for (Equipamiento equipoPuesto : equipamientos) {
+            if (equipoPuesto.getCategoria() == categoria) {
+                encontrado = equipoPuesto;
+            }
+        }
+        if (encontrado == null) {
+            throw new ReglaEquipamientoException("No lleva equipamiento de la categoria: " + categoria);
+        }
         quitarEquipamiento(encontrado);
     }
-
+    
     private void recortarEstadisticasAlMaximo() {
         this.vidaActual = Math.min(this.vidaActual, getVidaMaxima());
         this.energiaActual = Math.min(this.energiaActual, getEnergiaMaxima());
     }
 
     public List<Equipamiento> getEquipamientos() {
-        return Collections.unmodifiableList(equipamientos);
+        return new ArrayList<>(equipamientos);
     }
 
-    // --- CÁLCULO DINÁMICO DE ESTADÍSTICAS MÁXIMAS Y BONOS ---
+    // ACA VAMOS A HACER LOS CALCULOS 
 
     public int getVidaMaxima() {
-        int bonoEquipo = equipamientos.stream().mapToInt(Equipamiento::getBonoVidaMaxima).sum();
+        int bonoEquipo = 0;
+        for (Equipamiento equipo : equipamientos) {
+            bonoEquipo += equipo.getBonoVidaMaxima();
+        }
         return vidaBaseMaxima + bonoEquipo;
     }
 
     public int getEnergiaMaxima() {
-        int bonoEquipo = equipamientos.stream().mapToInt(Equipamiento::getBonoEnergiaMaxima).sum();
+        int bonoEquipo = 0;
+        for (Equipamiento equipo : equipamientos) {
+            bonoEquipo += equipo.getBonoEnergiaMaxima();
+        }
         return energiaBaseMaxima + bonoEquipo;
     }
 
     public int getBonoDanioEquipamiento() {
-        return equipamientos.stream().mapToInt(Equipamiento::getBonoDanio).sum();
+        int bonoTotal = 0;
+        for (Equipamiento equipo : equipamientos) {
+            bonoTotal += equipo.getBonoDanio();
+        }
+        return bonoTotal;
     }
 
     public int getReduccionDanioEquipamiento() {
-        return equipamientos.stream().mapToInt(Equipamiento::getReduccionDanio).sum();
+        int reduccionTotal = 0;
+        for (Equipamiento equipo : equipamientos) {
+            reduccionTotal += equipo.getReduccionDanio();
+        }
+        return reduccionTotal;
     }
 
-    // --- GESTIÓN DE VIDA Y ENERGÍA (RECORTANDO A LOS MÁXIMOS) ---
+    // ACA VAMOS A GESTIONAR LA VIDA Y LA ENERGIA
 
     public void recibirDanio(int danioBruto) {
         if (danioBruto <= 0 || !estaEnPie()) {
             return;
         }
-        // 1. Reducción polimórfica según el tipo de combatiente (ej. Monje del Cuerpo Celestial)
-        int danioTrasEspecialidad = aplicarReduccionPorEspecialidad(danioBruto);
-
-        // 2. Reducción acumulada por equipamiento (Armadura Dorada) + técnicas defensivas activas
-        int reduccionTotal = getReduccionDanioEquipamiento() + reduccionDanioCombate;
-        int danioFinal = Math.max(0, danioTrasEspecialidad - reduccionTotal);
-
+        
+        int danioFinal = Math.max(0, aplicarReduccionPorEspecialidad(danioBruto) - getReduccionDanioEquipamiento() - reduccionDanioCombate);
         this.vidaActual = Math.max(0, this.vidaActual - danioFinal);
     }
 
@@ -155,11 +188,11 @@ public abstract class Combatiente {
     }
 
     public void gastarEnergia(int costoBaseTecnica) {
-        int costoReal = calcularCostoEnergia(costoBaseTecnica);
-        if (this.energiaActual < costoReal) {
+   
+        if (this.energiaActual < calcularCostoEnergia(costoBaseTecnica)) {
             throw new IllegalStateException("Energía insuficiente para ejecutar la técnica.");
         }
-        this.energiaActual -= costoReal;
+        this.energiaActual -= calcularCostoEnergia(costoBaseTecnica);
     }
 
     public void perderEnergiaPorEfecto(int cantidad) {
@@ -173,7 +206,7 @@ public abstract class Combatiente {
         return this.energiaActual >= calcularCostoEnergia(costoBaseTecnica);
     }
 
-    // --- CÁLCULO DE DAÑO PRODUCIDO Y ESTADO DE COMBATE ---
+    // ACA VAMOS A CALCULAR EL DAÑO Y ESTADO DEL COMBATE
 
     public int calcularDanioProducido(int danioBase) {
         int danioConEquipo = danioBase + getBonoDanioEquipamiento();
@@ -214,7 +247,7 @@ public abstract class Combatiente {
         return Math.max(0, costoBase);
     }
 
-    // --- GETTERS E IDENTIDAD ---
+    // GETTERS Y SETERS
 
     public int getId() {
         return id;
