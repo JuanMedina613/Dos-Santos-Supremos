@@ -1,7 +1,5 @@
 package equipamiento;
 
-import java.util.Objects;
-
 public abstract class Equipamiento {
     private final String nombre;
     private final CategoriaEquipamiento categoria;
@@ -10,8 +8,11 @@ public abstract class Equipamiento {
         if (nombre == null || nombre.isBlank()) {
             throw new IllegalArgumentException("El nombre del equipamiento no puede estar vacío.");
         }
+        if (categoria == null) {
+            throw new IllegalArgumentException("La categoría no puede ser nula.");
+        }
         this.nombre = nombre;
-        this.categoria = Objects.requireNonNull(categoria, "La categoría no puede ser nula.");
+        this.categoria = categoria;
     }
 
     public String getNombre() {
@@ -22,7 +23,7 @@ public abstract class Equipamiento {
         return categoria;
     }
 
-    // Hooks polimórficos: cada subclase sobrescribe únicamente el bono que modifica
+    // POLIMORFISMO SOLO PARA LAS CLASES QUE LA IMPLEMENTAN
     public int getBonoDanio() {
         return 0;
     }
