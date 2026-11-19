@@ -1,5 +1,7 @@
 package tecnicas;
 
-public class TipoTecnica {
-
+public enum TipoTecnica {
+    OFENSIVA,
+    DEFENSIVA,
+    RECUPERACION
 }
