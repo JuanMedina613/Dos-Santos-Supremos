@@ -263,6 +263,11 @@ public abstract class Combatiente {
     public int getEnergiaActual() {
         return energiaActual;
     }
+    
+    // Este lo sume yo (Ari) para poder usarlo en la clase Combate
+    public int getReduccionDanioCombate() {
+        return reduccionDanioCombate;
+    }
 
     public boolean estaEnPie() {
         return this.vidaActual > 0;
