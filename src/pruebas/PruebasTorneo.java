@@ -7,6 +7,17 @@ import acontecimientos.Proclamacion;
 import acontecimientos.ResultadoCombate;
 import combatientes.Combatiente;
 import combatientes.CultivadorDeLaEspada;
+import combatientes.CreadorCombatientes;
+import combatientes.Escuela;
+import equipamiento.AnilloEspiritual;
+import equipamiento.ArmaduraDorada;
+import equipamiento.EspadaCelestial;
+import equipamiento.SelloDelFenix;
+import tecnicas.CorteDeLosMilAmaneceres;
+import tecnicas.DominioDeLaNada;
+import tecnicas.MeditacionDelInmortal;
+import tecnicas.MuroDelCuerpoDorado;
+import tecnicas.RugidoBestiaPrimordial;
 import excepciones.InscripcionInvalidaException;
 import org.junit.jupiter.api.Test;
 import torneo.Cruce;
@@ -180,6 +191,56 @@ public class PruebasTorneo {
         Pareja campeonaSegundo = segundo.iniciar();
 
         assertEquals(campeonaPrimero.getId(), campeonaSegundo.getId());
+    }
+
+    /** Arma siempre el mismo torneo con escuelas, técnicas y equipamiento. */
+    private Torneo torneoConEscuelas(CronistaDeLaSecta cronista) {
+        Escuela espada = new Escuela("Escuela de la Espada Celestial",
+                List.of(new CorteDeLosMilAmaneceres(), new RugidoBestiaPrimordial()),
+                List.of(new EspadaCelestial(8)));
+        Escuela vacio = new Escuela("Palacio del Vacío",
+                List.of(new DominioDeLaNada(), new MeditacionDelInmortal()),
+                List.of(new AnilloEspiritual(15)));
+        Escuela monasterio = new Escuela("Monasterio del Cuerpo Dorado",
+                List.of(new MuroDelCuerpoDorado(), new MeditacionDelInmortal()),
+                List.of(new ArmaduraDorada(3), new SelloDelFenix(20)));
+        CreadorCombatientes creador = new CreadorCombatientes();
+
+        Torneo torneo = new Torneo();
+        torneo.agregarEscuchador(cronista);
+        torneo.inscribir(new Pareja(1,
+                creador.crear("Cultivador de la Espada", "Aurelio", espada),
+                creador.crear("Hechicero del Vacío", "Nébula", vacio)));
+        torneo.inscribir(new Pareja(2,
+                creador.crear("Monje del Cuerpo Celestial", "Kael", monasterio),
+                creador.crear("Cultivador de la Espada", "Darian", espada)));
+        torneo.inscribir(new Pareja(3,
+                creador.crear("Hechicero del Vacío", "Lyra", vacio),
+                creador.crear("Monje del Cuerpo Celestial", "Thorne", monasterio)));
+        torneo.inscribir(new Pareja(4,
+                creador.crear("Cultivador de la Espada", "Soren", espada),
+                creador.crear("Hechicero del Vacío", "Mira", vacio)));
+        return torneo;
+    }
+
+    @Test
+    public void dosTorneosIgualesProducenElMismoCampeonYElMismoHistorial() {
+        CronistaDeLaSecta cronistaPrimero = new CronistaDeLaSecta();
+        CronistaDeLaSecta cronistaSegundo = new CronistaDeLaSecta();
+
+        Pareja campeonaPrimero = torneoConEscuelas(cronistaPrimero).iniciar();
+        Pareja campeonaSegundo = torneoConEscuelas(cronistaSegundo).iniciar();
+
+        assertEquals(campeonaPrimero.getId(), campeonaSegundo.getId());
+
+        // Se comparan las descripciones: la fecha y hora cambia en cada ejecución.
+        List<String> historialPrimero = cronistaPrimero.obtenerHistorial().stream()
+                .map(Acontecimiento::getDescripcion).toList();
+        List<String> historialSegundo = cronistaSegundo.obtenerHistorial().stream()
+                .map(Acontecimiento::getDescripcion).toList();
+
+        assertFalse(historialPrimero.isEmpty());
+        assertEquals(historialPrimero, historialSegundo);
     }
 
     @Test
