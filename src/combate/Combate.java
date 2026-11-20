@@ -2,6 +2,7 @@ package combate;
 
 import acontecimientos.AccionRealizada;
 import acontecimientos.Acontecimiento;
+import acontecimientos.EfectoTemporalAplicado;
 import acontecimientos.Eliminacion;
 import acontecimientos.EscuchadorAcontecimientos;
 import combatientes.Combatiente;
@@ -111,7 +112,7 @@ public class Combate {
 
         ejecutarTurnoPareja(primera, segunda);
 
-        if (!segunda.tieneCombatientesEnPie()) {
+        if (!primera.tieneCombatientesEnPie() || !segunda.tieneCombatientesEnPie()) {
             return;
         }
 
@@ -130,6 +131,19 @@ public class Combate {
         for (Combatiente combatiente : orden) {
 
             if (!combatiente.estaEnPie()) {
+                continue;
+            }
+
+            for (EfectoTemporal efecto : combatiente.procesarEfectosDeTurno()) {
+                notificar(new EfectoTemporalAplicado(
+                        numeroAsalto,
+                        combatiente,
+                        efecto.getNombre(),
+                        efecto.getTurnosRestantes()));
+            }
+
+            if (!combatiente.estaEnPie()) {
+                notificar(new Eliminacion(numeroAsalto, combatiente, combatiente));
                 continue;
             }
 

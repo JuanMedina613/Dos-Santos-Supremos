@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import combate.EfectoTemporal;
+
 public abstract class Combatiente {
     public static final int VIDA_BASE_POR_DEFECTO = 100;
     public static final int ENERGIA_BASE_POR_DEFECTO = 40;
@@ -28,6 +30,8 @@ public abstract class Combatiente {
 
     // Reducción de daño temporal durante el combate (ej. Muro del Cuerpo Dorado)
     private int reduccionDanioCombate;
+    
+    private final List<EfectoTemporal> efectosTemporales;
 
     private final List<Equipamiento> equipamientos;
     private final Map<Tecnica, Integer> usosPorTecnica;
@@ -46,6 +50,8 @@ public abstract class Combatiente {
         this.reduccionDanioCombate = 0;
         this.equipamientos = new ArrayList<>();
         this.usosPorTecnica = new LinkedHashMap<>();
+        this.efectosTemporales = new ArrayList<>();
+
     }
 
     // ACA VAMOS A MANERJAR LAS TECNICAS GESTIÓN DE TECNICAS
@@ -230,6 +236,7 @@ public abstract class Combatiente {
         this.vidaActual = getVidaMaxima();
         this.energiaActual = getEnergiaMaxima();
         this.reduccionDanioCombate = 0;
+        this.efectosTemporales.clear();
     }
 
     // --- HOOKS POLIMÓRFICOS PARA LAS SUBCLASES ---
@@ -275,6 +282,36 @@ public abstract class Combatiente {
 
     public boolean tieneVidaCompleta() {
         return this.vidaActual >= getVidaMaxima();
+    }
+    
+    public void aplicarEfectoTemporal(EfectoTemporal nuevoEfecto) {
+        if (nuevoEfecto == null) {
+            throw new IllegalArgumentException("El efecto temporal no puede ser nulo.");
+        }
+        if (!estaEnPie()) {
+            return;
+        }
+        efectosTemporales.removeIf(e -> e.getNombre().equals(nuevoEfecto.getNombre()));
+        efectosTemporales.add(nuevoEfecto);
+    }
+
+    public List<EfectoTemporal> procesarEfectosDeTurno() {
+        List<EfectoTemporal> procesados = new ArrayList<>();
+        if (!estaEnPie() || efectosTemporales.isEmpty()) {
+            return procesados;
+        }
+        for (EfectoTemporal efecto : new ArrayList<>(efectosTemporales)) {
+            efecto.aplicarEnTurno(this);
+            procesados.add(efecto);
+            if (efecto.estaFinalizado()) {
+                efectosTemporales.remove(efecto);
+            }
+        }
+        return procesados;
+    }
+
+    public List<EfectoTemporal> getEfectosTemporalesActivos() {
+        return new ArrayList<>(efectosTemporales);
     }
 
     @Override
