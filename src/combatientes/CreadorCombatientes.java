@@ -3,54 +3,47 @@ package combatientes;
 import equipamiento.Equipamiento;
 import tecnicas.Tecnica;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.BiFunction;
-
 public class CreadorCombatientes {
     private int siguienteId = 1;
-    private final Map<String, BiFunction<Integer, String, Combatiente>> constructoresPorTipo;
 
     public CreadorCombatientes() {
-        this.constructoresPorTipo = new HashMap<>();
-        // Registro de los 3 tipos iniciales pedidos en el TP
-        registrarTipo("Cultivador de la Espada", CultivadorDeLaEspada::new);
-        registrarTipo("Monje del Cuerpo Celestial", MonjeDelCuerpoCelestial::new);
-        registrarTipo("Hechicero del Vacio", HechiceroDelVacio::new);
-    }
-
-    // Permite agregar nuevos tipos en el futuro sin modificar esta clase (Principio Abierto/Cerrado)
-    public final void registrarTipo(String nombreTipo, BiFunction<Integer, String, Combatiente> constructor) {
-        if (nombreTipo == null || nombreTipo.isBlank()) {
-            throw new IllegalArgumentException("El nombre del tipo no puede estar vacio");
-        }
-        if (constructor == null) {
-            throw new NullPointerException("El constructor no puede ser nulo");
-        }
-        constructoresPorTipo.put(nombreTipo.trim(), constructor);
+        // Sin inicialización adicional
     }
 
     public Combatiente crear(String tipo, String nombre, Escuela escuela) {
         if (tipo == null || tipo.isBlank()) {
-            throw new IllegalArgumentException("El tipo de combatiente no puede estar vacio");
+            throw new IllegalArgumentException("El tipo de combatiente no puede estar vacío.");
         }
         if (escuela == null) {
-            throw new NullPointerException("La escuela no puede ser nula");
+            throw new NullPointerException("La escuela no puede ser nula.");
         }
 
-        BiFunction<Integer, String, Combatiente> constructor = constructoresPorTipo.get(tipo.trim());
-        if (constructor == null) {
-            throw new IllegalArgumentException("Tipo de combatiente desconocido: " + tipo);
-        }
-
-        // 1. Instanciar el combatiente con su ID unico en orden de creacion
         int idAsignado = siguienteId++;
-        Combatiente nuevo = constructor.apply(idAsignado, nombre);
+        Combatiente nuevo;
 
-        // 2. Prepararlo segun la filosofia de su Escuela (equipamiento y tecnicas iniciales)
+        switch (tipo.trim()) {
+            case "Cultivador de la Espada":
+                nuevo = new CultivadorDeLaEspada(idAsignado, nombre);
+                break;
+
+            case "Monje del Cuerpo Celestial":
+                nuevo = new MonjeDelCuerpoCelestial(idAsignado, nombre);
+                break;
+
+            case "Hechicero del Vacío":
+                nuevo = new HechiceroDelVacio(idAsignado, nombre);
+                break;
+
+            default:
+                throw new IllegalArgumentException(
+                        "Tipo de combatiente desconocido: " + tipo
+                );
+        }
+
         for (Equipamiento item : escuela.getEquipamientosIniciales()) {
             nuevo.equipar(item);
         }
+
         for (Tecnica tecnica : escuela.getTecnicasIniciales()) {
             nuevo.aprenderTecnica(tecnica);
         }
