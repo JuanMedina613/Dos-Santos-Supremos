@@ -1,7 +1,6 @@
 package tecnicas;
 
 import combatientes.Combatiente;
-import java.util.Objects;
 
 public class DominioDeLaNada extends Tecnica {
     public static final int COSTO_ENERGIA = 15;
@@ -14,7 +13,9 @@ public class DominioDeLaNada extends Tecnica {
 
     @Override
     protected void aplicarEfecto(Combatiente ejecutor, Combatiente objetivo) {
-        Objects.requireNonNull(objetivo, "El objetivo no puede ser nulo");
+        if (objetivo == null) {
+            throw new NullPointerException("El objetivo no puede ser nulo.");
+        }
         int danioFinal = ejecutor.calcularDanioProducido(DANIO_BASE);
         objetivo.recibirDanio(danioFinal);
         objetivo.perderEnergiaPorEfecto(DRENAJE_ENERGIA);
