@@ -7,15 +7,15 @@ public class CreadorCombatientes {
     private int siguienteId = 1;
 
     public CreadorCombatientes() {
-        // Sin inicialización adicional
+        // Sin inicializacion adicional
     }
 
     public Combatiente crear(String tipo, String nombre, Escuela escuela) {
         if (tipo == null || tipo.isBlank()) {
-            throw new IllegalArgumentException("El tipo de combatiente no puede estar vacío.");
+            throw new IllegalArgumentException("El tipo de combatiente no puede estar vacio");
         }
         if (escuela == null) {
-            throw new NullPointerException("La escuela no puede ser nula.");
+            throw new NullPointerException("La escuela no puede ser nula");
         }
 
         int idAsignado = siguienteId++;
@@ -30,7 +30,7 @@ public class CreadorCombatientes {
                 nuevo = new MonjeDelCuerpoCelestial(idAsignado, nombre);
                 break;
 
-            case "Hechicero del Vacío":
+            case "Hechicero del Vacio":
                 nuevo = new HechiceroDelVacio(idAsignado, nombre);
                 break;
 
