@@ -1,0 +1,428 @@
+---
+config:
+  layout: elk
+  elk:
+    mergeEdges: true
+    nodePlacementStrategy: BRANDES_KOEPF
+  class:
+    hideEmptyMembersBox: true
+---
+classDiagram
+direction LR
+
+namespace acontecimientos {
+    class EscuchadorAcontecimientos {
+        <<interface>>
+        +notificar(acontecimiento) void
+    }
+    class Acontecimiento {
+        <<abstract>>
+        -fechaHora: String
+        -descripcion: String
+        +getFechaHora() String
+        +getDescripcion() String
+    }
+    class InicioCombate {
+        -ronda: int
+        -pareja1: Pareja
+        -pareja2: Pareja
+        +getRonda() int
+        +getPareja1() Pareja
+        +getPareja2() Pareja
+    }
+    class AccionRealizada {
+        -asalto: int
+        -actor: Combatiente
+        -objetivo: Combatiente
+        -nombreAccion: String
+        -esTecnica: boolean
+        +getActor() Combatiente
+        +getObjetivo() Combatiente
+        +getNombreAccion() String
+        +isEsTecnica() boolean
+    }
+    class Eliminacion {
+        -asalto: int
+        -eliminado: Combatiente
+        -causante: Combatiente
+        +getEliminado() Combatiente
+        +getCausante() Combatiente
+    }
+    class EfectoTemporalAplicado {
+        -asalto: int
+        -afectado: Combatiente
+        -nombreEfecto: String
+        -turnosRestantes: int
+    }
+    class ResultadoCombate {
+        -ronda: int
+        -pareja1: Pareja
+        -vidaTotalPareja1: int
+        -pareja2: Pareja
+        -vidaTotalPareja2: int
+        -ganadora: Pareja
+        +getRonda() int
+        +getGanadora() Pareja
+        +getVidaTotalPareja1() int
+        +getVidaTotalPareja2() int
+    }
+    class Proclamacion {
+        -campeona: Pareja
+        +getCampeona() Pareja
+    }
+    class HeraldoImperial {
+        +notificar(acontecimiento) void
+        +anunciar(mensaje) void
+        +presentarTablaPosiciones(tabla: List~PosicionTabla~) void
+    }
+    class CronistaDeLaSecta {
+        -historial: List~Acontecimiento~
+        -registrosPorPareja: Map~Pareja, PosicionTabla~
+        +notificar(acontecimiento) void
+        +obtenerHistorial() List~Acontecimiento~
+        +generarTablaPosiciones() List~PosicionTabla~
+    }
+    class PosicionTabla {
+        -pareja: Pareja
+        -ultimaRonda: int
+        -vidaTotalFinal: int
+        +getPareja() Pareja
+        +getUltimaRonda() int
+        +getVidaTotalFinal() int
+        +compareTo(otra) int
+    }
+}
+
+namespace torneo {
+    class Torneo {
+        -parejasInscriptas: List~Pareja~
+        -parejasRegistradas: Set~Pareja~
+        -combatientesRegistrados: Set~Combatiente~
+        -rondas: List~List~Cruce~~
+        -escuchadores: List~EscuchadorAcontecimientos~
+        -iniciado: boolean
+        -campeona: Pareja
+        +agregarEscuchador(escuchador) void
+        +quitarEscuchador(escuchador) void
+        +inscribir(pareja) void
+        +iniciar() Pareja
+        -validarCantidadParejas() void
+        +getRondas() List~List~Cruce~~
+        +getCrucesDeRonda(numeroRonda) List~Cruce~
+        +getCampeona() Pareja
+    }
+    class Cruce {
+        -ronda: int
+        -orden: int
+        -pareja1: Pareja
+        -pareja2: Pareja
+        -escuchadores: List~EscuchadorAcontecimientos~
+        -combate: Combate
+        -ganadora: Pareja
+        +agregarEscuchador(escuchador) void
+        +ejecutar() Pareja
+        +getGanadora() Pareja
+        +fueEjecutado() boolean
+    }
+    class Pareja {
+        -id: int
+        -combatiente1: Combatiente
+        -combatiente2: Combatiente
+        -usuarioPorTecnica: Map~Tecnica, Combatiente~
+        +getId() int
+        +getCombatientes() List~Combatiente~
+        +getCombatientesEnPie() List~Combatiente~
+        +tieneCombatientesEnPie() boolean
+        +contiene(combatiente) boolean
+        +puedeUsarTecnica(combatiente, tecnica) boolean
+        +registrarUsoDeTecnica(combatiente, tecnica) void
+        +limpiarBloqueosDeCombate() void
+        +restaurarParaNuevoCombate() void
+        +getVidaTotal() int
+    }
+}
+
+namespace combate {
+    class Combate {
+        +MAXIMO_ASALTOS: int = 20$
+        +ENERGIA_RECUPERADA_POR_ASALTO: int = 10$
+        -pareja1: Pareja
+        -pareja2: Pareja
+        -numeroAsalto: int
+        -ganadora: Pareja
+        -escuchadores: List~EscuchadorAcontecimientos~
+        +agregarEscuchador(escuchador) void
+        +ejecutar() Pareja
+        -recuperarEnergiaInicioAsalto() void
+        -ejecutarAsalto() void
+        -ejecutarTurnoPareja(actuante, rival) void
+        -ejecutarAccion(actor, aliados, rivales) void
+        -elegirTecnica(actor, aliados) Tecnica
+        -elegirObjetivo(rivales) Combatiente
+        -determinarGanadora() Pareja
+        -notificar(acontecimiento) void
+        +getNumeroAsalto() int
+    }
+    class EfectoTemporal {
+        <<abstract>>
+        -nombre: String
+        -turnosRestantes: int
+        +getNombre() String
+        +getTurnosRestantes() int
+        +estaFinalizado() boolean
+        +aplicarEnTurno(afectado) void
+        #ejecutarEfecto(afectado) void*
+        #alFinalizar(afectado) void
+    }
+    class Veneno {
+        -danioPorTurno: int
+        #ejecutarEfecto(afectado) void
+    }
+    class Regeneracion {
+        -curacionPorTurno: int
+        #ejecutarEfecto(afectado) void
+    }
+}
+
+namespace combatientes {
+    class Combatiente {
+        <<abstract>>
+        +VIDA_BASE_POR_DEFECTO: int = 100$
+        +ENERGIA_BASE_POR_DEFECTO: int = 40$
+        +DANIO_ATAQUE_BASICO: int = 15$
+        +MAX_EQUIPAMIENTOS: int = 3$
+        +USOS_MAXIMOS_TECNICA: int = 5$
+        -id: int
+        -nombre: String
+        -vidaBaseMaxima: int
+        -energiaBaseMaxima: int
+        -vidaActual: int
+        -energiaActual: int
+        -reduccionDanioCombate: int
+        -equipamientos: List~Equipamiento~
+        -usosPorTecnica: Map~Tecnica, Integer~
+        -efectosTemporales: List~EfectoTemporal~
+        +aprenderTecnica(tecnica) void
+        +getUsosRestantes(tecnica) int
+        +consumirUsoTecnica(tecnica) void
+        +getTecnicasDisponibles() List~Tecnica~
+        +equipar(equipamiento) void
+        +quitarEquipamiento(equipamiento) void
+        +quitarEquipamientoPorCategoria(categoria) void
+        +getEquipamientos() List~Equipamiento~
+        +getVidaMaxima() int
+        +getEnergiaMaxima() int
+        +recibirDanio(danioBruto) void
+        +recuperarVida(cantidad) void
+        +recuperarEnergia(cantidad) void
+        +gastarEnergia(costoBase) void
+        +perderEnergiaPorEfecto(cantidad) void
+        +tieneEnergiaSuficiente(costoBase) boolean
+        +calcularDanioProducido(danioBase) int
+        +calcularDanioAtaqueBasico() int
+        +activarDefensaDeCombate(reduccion) void
+        +restaurarParaNuevoCombate() void
+        +aplicarEfectoTemporal(efecto) void
+        +procesarEfectosDeTurno() List~EfectoTemporal~
+        +estaEnPie() boolean
+        #aplicarPotenciacionPorEspecialidad(danio) int
+        #aplicarReduccionPorEspecialidad(danioEntrante) int
+        +calcularCostoEnergia(costoBase) int
+    }
+    class CultivadorDeLaEspada {
+        -MULTIPLICADOR_DANIO: double = 1.25$
+        #aplicarPotenciacionPorEspecialidad(danio) int
+    }
+    class MonjeDelCuerpoCelestial {
+        -FACTOR_REDUCCION: double = 0.75$
+        #aplicarReduccionPorEspecialidad(danioEntrante) int
+    }
+    class HechiceroDelVacio {
+        -FACTOR_COSTO_ENERGIA: double = 0.75$
+        +calcularCostoEnergia(costoBase) int
+    }
+    class Escuela {
+        -nombre: String
+        -tecnicasIniciales: List~Tecnica~
+        -equipamientosIniciales: List~Equipamiento~
+        +getNombre() String
+        +getTecnicasIniciales() List~Tecnica~
+        +getEquipamientosIniciales() List~Equipamiento~
+    }
+    class CreadorCombatientes {
+        -siguienteId: int
+        -constructoresPorTipo: Map~String, BiFunction~
+        +registrarTipo(nombreTipo, constructor) void
+        +crear(tipo, nombre, escuela) Combatiente
+    }
+}
+
+namespace equipamiento {
+    class Equipamiento {
+        <<abstract>>
+        -nombre: String
+        -categoria: CategoriaEquipamiento
+        +getNombre() String
+        +getCategoria() CategoriaEquipamiento
+        +getBonoDanio() int
+        +getReduccionDanio() int
+        +getBonoEnergiaMaxima() int
+        +getBonoVidaMaxima() int
+    }
+    class EspadaCelestial {
+        -bonoDanio: int
+        +getBonoDanio() int
+    }
+    class ArmaduraDorada {
+        -reduccionDanio: int
+        +getReduccionDanio() int
+    }
+    class AnilloEspiritual {
+        -bonoEnergiaMaxima: int
+        +getBonoEnergiaMaxima() int
+    }
+    class SelloDelFenix {
+        -bonoVidaMaxima: int
+        +getBonoVidaMaxima() int
+    }
+    class CategoriaEquipamiento {
+        <<enumeration>>
+        ARMA
+        ARMADURA
+        ANILLO
+        SELLO
+    }
+}
+
+namespace tecnicas {
+    class Tecnica {
+        <<abstract>>
+        -nombre: String
+        -costoEnergia: int
+        -tipo: TipoTecnica
+        +getNombre() String
+        +getCostoEnergia() int
+        +esOfensiva() boolean
+        +esDefensiva() boolean
+        +esDeRecuperacion() boolean
+        +aplicar(ejecutor, objetivo) void
+        #aplicarEfecto(ejecutor, objetivo) void*
+    }
+    class CorteDeLosMilAmaneceres {
+        +COSTO_ENERGIA: int = 12$
+        +DANIO_BASE: int = 25$
+        #aplicarEfecto(ejecutor, objetivo) void
+    }
+    class MuroDelCuerpoDorado {
+        +COSTO_ENERGIA: int = 10$
+        +REDUCCION_DANIO: int = 8$
+        #aplicarEfecto(ejecutor, objetivo) void
+    }
+    class DominioDeLaNada {
+        +COSTO_ENERGIA: int = 15$
+        +DANIO_BASE: int = 20$
+        +DRENAJE_ENERGIA: int = 10$
+        #aplicarEfecto(ejecutor, objetivo) void
+    }
+    class RugidoBestiaPrimordial {
+        +COSTO_ENERGIA: int = 20$
+        +DANIO_BASE: int = 40$
+        #aplicarEfecto(ejecutor, objetivo) void
+    }
+    class MeditacionDelInmortal {
+        +COSTO_ENERGIA: int = 12$
+        +CURACION_BASE: int = 25$
+        #aplicarEfecto(ejecutor, objetivo) void
+    }
+    class PalmaEnvenenada {
+        +COSTO_ENERGIA: int = 14$
+        +DANIO_INICIAL: int = 10$
+        +DANIO_VENENO: int = 8$
+        +DURACION_TURNOS: int = 3$
+        #aplicarEfecto(ejecutor, objetivo) void
+    }
+    class AlientoVital {
+        +COSTO_ENERGIA: int = 14$
+        +CURACION_POR_TURNO: int = 12$
+        +DURACION_TURNOS: int = 3$
+        #aplicarEfecto(ejecutor, objetivo) void
+    }
+    class TipoTecnica {
+        <<enumeration>>
+        OFENSIVA
+        DEFENSIVA
+        RECUPERACION
+    }
+}
+
+namespace excepciones {
+    class ReglaEquipamientoException {
+        <<exception>>
+    }
+    class InscripcionInvalidaException {
+        <<exception>>
+    }
+}
+
+%% ===================== RELACIONES =====================
+
+EscuchadorAcontecimientos <|.. HeraldoImperial
+EscuchadorAcontecimientos <|.. CronistaDeLaSecta
+EscuchadorAcontecimientos ..> Acontecimiento : recibe
+
+Acontecimiento <|-- InicioCombate
+Acontecimiento <|-- AccionRealizada
+Acontecimiento <|-- Eliminacion
+Acontecimiento <|-- EfectoTemporalAplicado
+Acontecimiento <|-- ResultadoCombate
+Acontecimiento <|-- Proclamacion
+
+CronistaDeLaSecta o-- "*" Acontecimiento : historial
+CronistaDeLaSecta ..> PosicionTabla : genera
+HeraldoImperial ..> PosicionTabla : presenta
+PosicionTabla --> Pareja
+
+Torneo o-- "4..8" Pareja
+Torneo *-- "*" Cruce : rondas
+Torneo o-- "*" EscuchadorAcontecimientos
+Torneo ..> Proclamacion : crea
+Torneo ..> InscripcionInvalidaException : lanza
+Cruce --> "2" Pareja
+Cruce *-- "1" Combate
+Cruce ..> Acontecimiento : crea
+Combate --> "2" Pareja
+Combate --> "*" EscuchadorAcontecimientos : notifica
+Combate ..> Acontecimiento : crea
+Pareja o-- "2" Combatiente
+
+EfectoTemporal <|-- Veneno
+EfectoTemporal <|-- Regeneracion
+EfectoTemporal "*" --* Combatiente
+
+Combatiente <|-- CultivadorDeLaEspada
+Combatiente <|-- MonjeDelCuerpoCelestial
+Combatiente <|-- HechiceroDelVacio
+CreadorCombatientes ..> Combatiente : crea
+CreadorCombatientes ..> Escuela : usa
+Escuela o-- "*" Tecnica
+Escuela o-- "*" Equipamiento
+Combatiente o-- "0..3" Equipamiento
+Combatiente o-- "*" Tecnica
+Combatiente ..> ReglaEquipamientoException : lanza
+
+Equipamiento <|-- EspadaCelestial
+Equipamiento <|-- ArmaduraDorada
+Equipamiento <|-- AnilloEspiritual
+Equipamiento <|-- SelloDelFenix
+Equipamiento --> CategoriaEquipamiento
+
+Tecnica <|-- CorteDeLosMilAmaneceres
+Tecnica <|-- MuroDelCuerpoDorado
+Tecnica <|-- DominioDeLaNada
+Tecnica <|-- RugidoBestiaPrimordial
+Tecnica <|-- MeditacionDelInmortal
+Tecnica <|-- PalmaEnvenenada
+Tecnica <|-- AlientoVital
+Tecnica --> TipoTecnica
+PalmaEnvenenada ..> Veneno : crea
+AlientoVital ..> Regeneracion : crea

@@ -86,6 +86,16 @@ class PruebasAcontecimiento {
     }
 
     @Test
+    void eliminacionPorEfectoTemporalNombraElEfectoYNoTieneCausante() {
+        Eliminacion eliminacion = new Eliminacion(5, kael, "Veneno");
+
+        assertEquals(kael, eliminacion.getEliminado());
+        assertNull(eliminacion.getCausante());
+        assertTrue(eliminacion.getDescripcion().contains("por Veneno"));
+        assertFalse(eliminacion.getDescripcion().contains("tras el ataque de"));
+    }
+
+    @Test
     void rechazarParametrosInvalidos() {
         assertThrows(IllegalArgumentException.class, () -> new InicioCombate(1, null, pareja2));
         assertThrows(IllegalArgumentException.class, () -> new AccionRealizada(1, null, kael, "Ataque", false));

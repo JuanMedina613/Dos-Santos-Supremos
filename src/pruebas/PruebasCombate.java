@@ -19,6 +19,9 @@ import tecnicas.CorteDeLosMilAmaneceres;
 import tecnicas.MuroDelCuerpoDorado;
 import tecnicas.RugidoBestiaPrimordial;
 import tecnicas.MeditacionDelInmortal;
+import equipamiento.SelloDelFenix;
+
+import java.util.List;
 
 public class PruebasCombate {
 
@@ -170,32 +173,93 @@ public class PruebasCombate {
     public void anteEmpateDeVidaGanaLaParejaDeMenorId() {
 
         /*
-         * Usamos combatientes del mismo tipo y sin técnicas
-         * para producir un escenario completamente simétrico.
+         * Combatientes que no hacen daño: el combate llega al límite
+         * de asaltos con la misma vida total en ambas parejas.
+         * La pareja de mayor id se pasa primero para que el resultado
+         * no dependa del orden de los parámetros.
          */
+        Pareja parejaMenorId = new Pareja(1,
+                new CombatienteSinDanio(1, "A"), new CombatienteSinDanio(2, "B"));
+        Pareja parejaMayorId = new Pareja(2,
+                new CombatienteSinDanio(3, "C"), new CombatienteSinDanio(4, "D"));
 
-        Combatiente c1 =
-                new MonjeDelCuerpoCelestial(1, "A");
-        Combatiente c2 =
-                new MonjeDelCuerpoCelestial(2, "B");
-
-        Combatiente c3 =
-                new MonjeDelCuerpoCelestial(3, "C");
-        Combatiente c4 =
-                new MonjeDelCuerpoCelestial(4, "D");
-
-        Pareja parejaMenorId =
-                new Pareja(1, c1, c2);
-
-        Pareja parejaMayorId =
-                new Pareja(2, c3, c4);
-
-        Combate combate =
-                new Combate(parejaMenorId, parejaMayorId);
-
+        Combate combate = new Combate(parejaMayorId, parejaMenorId);
         Pareja ganadora = combate.ejecutar();
 
-        assertNotNull(ganadora);
+        assertEquals(Combate.MAXIMO_ASALTOS, combate.getNumeroAsalto());
+        assertEquals(parejaMenorId.getVidaTotal(), parejaMayorId.getVidaTotal());
+        assertEquals(parejaMenorId, ganadora);
+    }
+
+    @Test
+    public void alLimiteDeAsaltosGanaLaParejaConMasVidaTotal() {
+        Combatiente conSello = new CombatienteSinDanio(3, "Con sello");
+        conSello.equipar(new SelloDelFenix(30));
+
+        Pareja parejaMenorId = new Pareja(1,
+                new CombatienteSinDanio(1, "A"), new CombatienteSinDanio(2, "B"));
+        Pareja parejaConMasVida = new Pareja(2,
+                conSello, new CombatienteSinDanio(4, "D"));
+
+        Combate combate = new Combate(parejaMenorId, parejaConMasVida);
+        Pareja ganadora = combate.ejecutar();
+
+        assertEquals(Combate.MAXIMO_ASALTOS, combate.getNumeroAsalto());
+        assertTrue(parejaConMasVida.getVidaTotal() > parejaMenorId.getVidaTotal());
+        assertEquals(parejaConMasVida, ganadora);
+    }
+
+    @Test
+    public void losUsosSeConservanEntreCombatesYVidaYEnergiaSeRecuperan() {
+        Tecnica corte = new CorteDeLosMilAmaneceres();
+        Combatiente atacante = new CultivadorDeLaEspada(1, "Atacante");
+        atacante.aprenderTecnica(corte);
+        Pareja parejaAtacante = new Pareja(1, atacante, new CombatienteSinDanio(2, "Companero"));
+        Pareja parejaRival = new Pareja(2,
+                new CultivadorDeLaEspada(3, "Rival 1"), new CultivadorDeLaEspada(4, "Rival 2"));
+
+        new Combate(parejaAtacante, parejaRival).ejecutar();
+
+        int usosTrasPrimerCombate = atacante.getUsosRestantes(corte);
+        assertTrue(usosTrasPrimerCombate < Combatiente.USOS_MAXIMOS_TECNICA);
+        assertTrue(atacante.getEnergiaActual() < atacante.getEnergiaMaxima()
+                || atacante.getVidaActual() < atacante.getVidaMaxima());
+
+        // Es lo que hace Combate al comenzar el siguiente combate.
+        parejaAtacante.restaurarParaNuevoCombate();
+        parejaRival.restaurarParaNuevoCombate();
+
+        assertEquals(usosTrasPrimerCombate, atacante.getUsosRestantes(corte));
+        for (Combatiente c : List.of(atacante, parejaRival.getCombatiente1(), parejaRival.getCombatiente2())) {
+            assertEquals(c.getVidaMaxima(), c.getVidaActual());
+            assertEquals(c.getEnergiaMaxima(), c.getEnergiaActual());
+            assertTrue(c.estaEnPie());
+        }
+    }
+
+    @Test
+    public void losCaidosEnUnCombateVuelvenAActuarEnElSiguiente() {
+        Pareja fuerte = new Pareja(1,
+                new CombatienteLetal(1, "Letal 1"), new CombatienteLetal(2, "Letal 2"));
+        Combatiente debil1 = new CultivadorDeLaEspada(3, "Debil 1");
+        Combatiente debil2 = new CultivadorDeLaEspada(4, "Debil 2");
+        Pareja debil = new Pareja(2, debil1, debil2);
+
+        new Combate(fuerte, debil).ejecutar();
+        assertFalse(debil.tieneCombatientesEnPie());
+
+        CronistaDeLaSecta cronista = new CronistaDeLaSecta();
+        Pareja otraFuerte = new Pareja(3,
+                new CombatienteLetal(5, "Letal 3"), new CombatienteLetal(6, "Letal 4"));
+        Combate segundo = new Combate(debil, otraFuerte);
+        segundo.agregarEscuchador(cronista);
+        segundo.ejecutar();
+
+        boolean debilActuo = cronista.obtenerHistorial().stream()
+                .filter(AccionRealizada.class::isInstance)
+                .map(AccionRealizada.class::cast)
+                .anyMatch(a -> a.getActor().equals(debil1));
+        assertTrue(debilActuo);
     }
 
     @Test

@@ -118,6 +118,34 @@ class PruebasCronista {
     }
 
     @Test
+    void ordenarPorUltimaRondaYLuegoPorVidaTotalFinal() {
+        // Ronda 1: pierden pareja2 (con 0) y pareja4 (con 0).
+        cronista.notificar(new ResultadoCombate(1, pareja1, 40, pareja2, 0, pareja1));
+        cronista.notificar(new ResultadoCombate(1, pareja3, 90, pareja4, 0, pareja3));
+        // Final (ronda 2): gana pareja1 por más vida al límite de asaltos.
+        cronista.notificar(new ResultadoCombate(2, pareja1, 60, pareja3, 25, pareja1));
+
+        List<PosicionTabla> tabla = cronista.generarTablaPosiciones();
+
+        assertEquals(List.of(pareja1, pareja3, pareja2, pareja4),
+                tabla.stream().map(PosicionTabla::getPareja).toList());
+        assertEquals(2, tabla.get(0).getUltimaRonda());
+        assertEquals(60, tabla.get(0).getVidaTotalFinal());
+    }
+
+    @Test
+    void dentroDeUnaRondaOrdenaPorVidaTotalFinalAntesQuePorIdentificador() {
+        // Las cuatro parejas jugaron solo la ronda 1; la de mayor id terminó con más vida.
+        cronista.notificar(new ResultadoCombate(1, pareja1, 10, pareja2, 0, pareja1));
+        cronista.notificar(new ResultadoCombate(1, pareja3, 0, pareja4, 70, pareja4));
+
+        List<PosicionTabla> tabla = cronista.generarTablaPosiciones();
+
+        assertEquals(List.of(pareja4, pareja1, pareja2, pareja3),
+                tabla.stream().map(PosicionTabla::getPareja).toList());
+    }
+
+    @Test
     void rechazarAcontecimientoNulo() {
         assertThrows(IllegalArgumentException.class, () -> cronista.notificar(null));
     }

@@ -134,7 +134,9 @@ public class Combate {
                 continue;
             }
 
+            String ultimoEfecto = null;
             for (EfectoTemporal efecto : combatiente.procesarEfectosDeTurno()) {
+                ultimoEfecto = efecto.getNombre();
                 notificar(new EfectoTemporalAplicado(
                         numeroAsalto,
                         combatiente,
@@ -143,7 +145,7 @@ public class Combate {
             }
 
             if (!combatiente.estaEnPie()) {
-                notificar(new Eliminacion(numeroAsalto, combatiente, combatiente));
+                notificar(new Eliminacion(numeroAsalto, combatiente, ultimoEfecto));
                 continue;
             }
 
@@ -321,8 +323,8 @@ public class Combate {
             return pareja1;
         }
 
-        int vidaPareja1 = calcularVidaTotal(pareja1);
-        int vidaPareja2 = calcularVidaTotal(pareja2);
+        int vidaPareja1 = pareja1.getVidaTotal();
+        int vidaPareja2 = pareja2.getVidaTotal();
 
         if (vidaPareja1 > vidaPareja2) {
             return pareja1;
@@ -337,15 +339,6 @@ public class Combate {
         return pareja1.getId() < pareja2.getId()
                 ? pareja1
                 : pareja2;
-    }
-
-    private int calcularVidaTotal(Pareja pareja) {
-
-        return pareja.getCombatientes()
-                .stream()
-                .filter(Combatiente::estaEnPie)
-                .mapToInt(Combatiente::getVidaActual)
-                .sum();
     }
 
     public int getNumeroAsalto() {
