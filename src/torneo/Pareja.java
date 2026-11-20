@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class Pareja {
 
@@ -31,13 +30,18 @@ public class Pareja {
                     "El identificador de la pareja debe ser positivo.");
         }
 
-        this.combatiente1 = Objects.requireNonNull(
-                combatiente1,
-                "El primer combatiente no puede ser nulo.");
+        if (combatiente1 == null) {
+            throw new NullPointerException(
+                    "El primer combatiente no puede ser nulo.");
+        }
 
-        this.combatiente2 = Objects.requireNonNull(
-                combatiente2,
-                "El segundo combatiente no puede ser nulo.");
+        if (combatiente2 == null) {
+            throw new NullPointerException(
+                    "El segundo combatiente no puede ser nulo.");
+        }
+
+        this.combatiente1 = combatiente1;
+        this.combatiente2 = combatiente2;
 
         if (combatiente1.equals(combatiente2)) {
             throw new IllegalArgumentException(
@@ -91,11 +95,15 @@ public class Pareja {
             Combatiente combatiente,
             Tecnica tecnica) {
 
-        Objects.requireNonNull(combatiente,
-                "El combatiente no puede ser nulo.");
+        if (combatiente == null) {
+            throw new NullPointerException(
+                    "El combatiente no puede ser nulo.");
+        }
 
-        Objects.requireNonNull(tecnica,
-                "La técnica no puede ser nula.");
+        if (tecnica == null) {
+            throw new NullPointerException(
+                    "La técnica no puede ser nula.");
+        }
 
         if (!contiene(combatiente)) {
             return false;
@@ -131,11 +139,15 @@ public class Pareja {
             Combatiente combatiente,
             Tecnica tecnica) {
 
-        Objects.requireNonNull(combatiente,
-                "El combatiente no puede ser nulo.");
+        if (combatiente == null) {
+            throw new NullPointerException(
+                    "El combatiente no puede ser nulo.");
+        }
 
-        Objects.requireNonNull(tecnica,
-                "La técnica no puede ser nula.");
+        if (tecnica == null) {
+            throw new NullPointerException(
+                    "La técnica no puede ser nula.");
+        }
 
         if (!contiene(combatiente)) {
             throw new IllegalArgumentException(

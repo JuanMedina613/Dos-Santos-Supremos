@@ -6,7 +6,6 @@ import acontecimientos.ResultadoCombate;
 import combate.Combate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class Cruce {
     private final int ronda;
@@ -20,17 +19,41 @@ public class Cruce {
     public Cruce(int ronda, Pareja pareja1, Pareja pareja2) { this(ronda, 1, pareja1, pareja2); }
 
     public Cruce(int ronda, int orden, Pareja pareja1, Pareja pareja2) {
-        if (ronda <= 0 || orden <= 0) throw new IllegalArgumentException("Ronda y orden deben ser positivos.");
-        this.pareja1 = Objects.requireNonNull(pareja1, "La primera pareja no puede ser nula.");
-        this.pareja2 = Objects.requireNonNull(pareja2, "La segunda pareja no puede ser nula.");
-        if (pareja1.equals(pareja2)) throw new IllegalArgumentException("Una pareja no puede enfrentarse consigo misma.");
+        if (ronda <= 0 || orden <= 0) {
+            throw new IllegalArgumentException(
+                    "Ronda y orden deben ser positivos.");
+        }
+
+        if (pareja1 == null) {
+            throw new NullPointerException(
+                    "La primera pareja no puede ser nula.");
+        }
+
+        if (pareja2 == null) {
+            throw new NullPointerException(
+                    "La segunda pareja no puede ser nula.");
+        }
+
+        if (pareja1.equals(pareja2)) {
+            throw new IllegalArgumentException(
+                    "Una pareja no puede enfrentarse consigo misma.");
+        }
+
         this.ronda = ronda;
         this.orden = orden;
+        this.pareja1 = pareja1;
+        this.pareja2 = pareja2;
     }
 
     public void agregarEscuchador(EscuchadorAcontecimientos escuchador) {
-        Objects.requireNonNull(escuchador, "El escuchador no puede ser nulo.");
-        if (!escuchadores.contains(escuchador)) escuchadores.add(escuchador);
+    	if (escuchador == null) {
+            throw new NullPointerException(
+                    "El escuchador no puede ser nulo.");
+        }
+
+        if (!escuchadores.contains(escuchador)) {
+            escuchadores.add(escuchador);
+        }
     }
 
     private void notificar(acontecimientos.Acontecimiento acontecimiento) {

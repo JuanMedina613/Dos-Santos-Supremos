@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
 public class Torneo {
@@ -41,10 +40,11 @@ public class Torneo {
     public void agregarEscuchador(
             EscuchadorAcontecimientos escuchador) {
 
-        Objects.requireNonNull(
-                escuchador,
-                "El escuchador no puede ser nulo."
-        );
+        if (escuchador == null) {
+            throw new NullPointerException(
+                    "El escuchador no puede ser nulo."
+            );
+        }
 
         if (!escuchadores.contains(escuchador)) {
             escuchadores.add(escuchador);
