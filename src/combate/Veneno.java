@@ -8,7 +8,7 @@ public class Veneno extends EfectoTemporal {
     public Veneno(int danioPorTurno, int duracionTurnos) {
         super("Veneno", duracionTurnos);
         if (danioPorTurno <= 0) {
-            throw new IllegalArgumentException("El daño por turno del veneno debe ser positivo.");
+            throw new IllegalArgumentException("El danio por turno del veneno debe ser positivo");
         }
         this.danioPorTurno = danioPorTurno;
     }

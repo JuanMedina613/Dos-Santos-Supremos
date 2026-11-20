@@ -18,7 +18,7 @@ public class PruebasEquipamiento {
     private static final int BONO_ANILLO = 10;
     private static final int BONO_SELLO = 20;
 
-    /** Combatiente sin especialidad, para medir solo el efecto del equipamiento. */
+    /** Combatiente sin especialidad, para medir solo el efecto del equipamiento */
     private static class CombatienteDePrueba extends Combatiente {
         CombatienteDePrueba(int id, String nombre) {
             super(id, nombre);

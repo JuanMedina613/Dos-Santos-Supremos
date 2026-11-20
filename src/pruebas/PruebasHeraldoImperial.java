@@ -22,7 +22,7 @@ class PruebasHeraldoImperial {
         heraldo = new HeraldoImperial();
         pareja1 = new Pareja(1,
                 new CultivadorDeLaEspada(1, "Aurelio"),
-                new HechiceroDelVacio(2, "Nébula"));
+                new HechiceroDelVacio(2, "Nebula"));
     }
 
     @Test

@@ -34,14 +34,14 @@ public class ResultadoCombate extends Acontecimiento {
             int vidaTotalPareja2,
             Pareja ganadora) {
         if (pareja1 == null || pareja2 == null) {
-            throw new IllegalArgumentException("Las parejas del resultado no pueden ser nulas.");
+            throw new IllegalArgumentException("Las parejas del resultado no pueden ser nulas");
         }
         if (ganadora == null) {
-            throw new IllegalArgumentException("La pareja ganadora no puede ser nula.");
+            throw new IllegalArgumentException("La pareja ganadora no puede ser nula");
         }
         return "Ronda " + ronda + " - Victoria de " + ganadora
                 + " | Vida total final -> " + pareja1 + ": " + vidaTotalPareja1
-                + ", " + pareja2 + ": " + vidaTotalPareja2 + ".";
+                + ", " + pareja2 + ": " + vidaTotalPareja2;
     }
 
     public int getRonda() {

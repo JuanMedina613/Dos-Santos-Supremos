@@ -15,11 +15,11 @@ public class Pareja {
     private final Combatiente combatiente2;
 
     /*
-     * Registra qué combatiente utilizó primero una técnica
-     * durante el combate actual.
+     * Registra que combatiente utilizo primero una tecnica
+     * durante el combate actual
      *
      * Mientras ese combatiente siga en pie y tenga usos disponibles,
-     * su compañero no podrá utilizar la misma técnica.
+     * su compañero no podra utilizar la misma tecnica
      */
     private final Map<Tecnica, Combatiente> usuarioPorTecnica;
 
@@ -27,17 +27,17 @@ public class Pareja {
 
         if (id <= 0) {
             throw new IllegalArgumentException(
-                    "El identificador de la pareja debe ser positivo.");
+                    "El identificador de la pareja debe ser positivo");
         }
 
         if (combatiente1 == null) {
             throw new NullPointerException(
-                    "El primer combatiente no puede ser nulo.");
+                    "El primer combatiente no puede ser nulo");
         }
 
         if (combatiente2 == null) {
             throw new NullPointerException(
-                    "El segundo combatiente no puede ser nulo.");
+                    "El segundo combatiente no puede ser nulo");
         }
 
         this.combatiente1 = combatiente1;
@@ -45,7 +45,7 @@ public class Pareja {
 
         if (combatiente1.equals(combatiente2)) {
             throw new IllegalArgumentException(
-                    "Una pareja no puede contener dos veces al mismo combatiente.");
+                    "Una pareja no puede contener dos veces al mismo combatiente");
         }
 
         this.id = id;
@@ -97,12 +97,12 @@ public class Pareja {
 
         if (combatiente == null) {
             throw new NullPointerException(
-                    "El combatiente no puede ser nulo.");
+                    "El combatiente no puede ser nulo");
         }
 
         if (tecnica == null) {
             throw new NullPointerException(
-                    "La técnica no puede ser nula.");
+                    "La tecnica no puede ser nula");
         }
 
         if (!contiene(combatiente)) {
@@ -111,19 +111,19 @@ public class Pareja {
 
         Combatiente usuarioRegistrado = usuarioPorTecnica.get(tecnica);
 
-        // Nadie de la pareja utilizó todavía esta técnica.
+        // Nadie de la pareja utilizo todavia esta tecnica
         if (usuarioRegistrado == null) {
             return true;
         }
 
-        // El mismo combatiente que inició su uso puede seguir utilizándola.
+        // El mismo combatiente que inicio su uso puede seguir utilizandola
         if (usuarioRegistrado.equals(combatiente)) {
             return true;
         }
 
         /*
-         * Si el combatiente que bloqueaba la técnica cayó
-         * o agotó sus usos, el compañero puede utilizarla.
+         * Si el combatiente que bloqueaba la tecnica cayo
+         * o agoto sus usos, el compañero puede utilizarla
          */
         if (!usuarioRegistrado.estaEnPie()
                 || usuarioRegistrado.getUsosRestantes(tecnica) == 0) {
@@ -141,17 +141,17 @@ public class Pareja {
 
         if (combatiente == null) {
             throw new NullPointerException(
-                    "El combatiente no puede ser nulo.");
+                    "El combatiente no puede ser nulo");
         }
 
         if (tecnica == null) {
             throw new NullPointerException(
-                    "La técnica no puede ser nula.");
+                    "La tecnica no puede ser nula");
         }
 
         if (!contiene(combatiente)) {
             throw new IllegalArgumentException(
-                    "El combatiente no pertenece a esta pareja.");
+                    "El combatiente no pertenece a esta pareja");
         }
 
         usuarioPorTecnica.putIfAbsent(tecnica, combatiente);

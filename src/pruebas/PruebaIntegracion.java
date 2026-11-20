@@ -34,12 +34,12 @@ class PruebaIntegracion {
                 List.of(new EspadaCelestial(5)));
 
         Combatiente c1 = creador.crear("Cultivador de la Espada", "C1", escuela);
-        Combatiente c2 = creador.crear("Hechicero del Vacío", "C2", escuela);
+        Combatiente c2 = creador.crear("Hechicero del Vacio", "C2", escuela);
         Combatiente c3 = creador.crear("Monje del Cuerpo Celestial", "C3", escuela);
         Combatiente c4 = creador.crear("Cultivador de la Espada", "C4", escuela);
 
         Pareja p1 = new Pareja(1, c1, c2);
-        Pareja p2ConRepetido = new Pareja(2, c1, c3); // c1 ya está en p1
+        Pareja p2ConRepetido = new Pareja(2, c1, c3); // c1 ya esta en p1
         Pareja p3 = new Pareja(3, c3, c4);
 
         Torneo torneo = new Torneo();
@@ -51,13 +51,13 @@ class PruebaIntegracion {
         // Combatiente ya inscripto en otra pareja
         assertThrows(InscripcionInvalidaException.class, () -> torneo.inscribir(p2ConRepetido));
 
-        // Cantidad inválida de parejas (solo 2 inscriptas)
+        // Cantidad invalida de parejas (solo 2 inscriptas)
         torneo.inscribir(p3);
         assertThrows(InscripcionInvalidaException.class, torneo::iniciar);
     }
 
     @Test
-    @DisplayName("Torneo de 4 parejas completa 2 rondas, proclama campeón y arma la tabla en el Cronista")
+    @DisplayName("Torneo de 4 parejas completa 2 rondas, proclama campeon y arma la tabla en el Cronista")
     void ejecutarTorneoDeCuatroParejasYVerificarCronista() {
         Torneo torneo = construirTorneoDeterministaCuatroParejas();
         CronistaDeLaSecta cronista = new CronistaDeLaSecta();
@@ -90,7 +90,7 @@ class PruebaIntegracion {
     }
 
     @Test
-    @DisplayName("Dos torneos armados igual producen el mismo campeón, la misma tabla y el mismo historial")
+    @DisplayName("Dos torneos armados igual producen el mismo campeon, la misma tabla y el mismo historial")
     void reproducibilidadDeDosTorneosIdenticos() {
         Torneo torneoA = construirTorneoDeterministaCuatroParejas();
         CronistaDeLaSecta cronistaA = new CronistaDeLaSecta();
@@ -129,7 +129,7 @@ class PruebaIntegracion {
                 List.of(new CorteDeLosMilAmaneceres()),
                 List.of(new EspadaCelestial(8)));
         Escuela vacio = new Escuela(
-                "Palacio del Vacío",
+                "Palacio del Vacio",
                 List.of(new DominioDeLaNada(), new MeditacionDelInmortal()),
                 List.of(new AnilloEspiritual(15)));
         Escuela monje = new Escuela(
@@ -142,16 +142,16 @@ class PruebaIntegracion {
 
         torneo.inscribir(new Pareja(1,
                 creador.crear("Cultivador de la Espada", "Aurelio", espada),
-                creador.crear("Hechicero del Vacío", "Nébula", vacio)));
+                creador.crear("Hechicero del Vacio", "Nebula", vacio)));
         torneo.inscribir(new Pareja(2,
                 creador.crear("Monje del Cuerpo Celestial", "Kael", monje),
                 creador.crear("Cultivador de la Espada", "Darian", espada)));
         torneo.inscribir(new Pareja(3,
-                creador.crear("Hechicero del Vacío", "Lyra", vacio),
+                creador.crear("Hechicero del Vacio", "Lyra", vacio),
                 creador.crear("Monje del Cuerpo Celestial", "Thorne", monje)));
         torneo.inscribir(new Pareja(4,
                 creador.crear("Cultivador de la Espada", "Soren", espada),
-                creador.crear("Hechicero del Vacío", "Mira", vacio)));
+                creador.crear("Hechicero del Vacio", "Mira", vacio)));
 
         return torneo;
     }

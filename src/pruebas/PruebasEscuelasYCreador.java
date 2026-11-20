@@ -31,7 +31,7 @@ public class PruebasEscuelasYCreador {
 
         Combatiente primero = creador.crear("Cultivador de la Espada", "Aurelio", escuela);
         Combatiente segundo = creador.crear("Monje del Cuerpo Celestial", "Kael", escuela);
-        Combatiente tercero = creador.crear("Hechicero del Vacío", "Nébula", escuela);
+        Combatiente tercero = creador.crear("Hechicero del Vacio", "Nebula", escuela);
 
         assertEquals(PRIMER_ID_ESPERADO, primero.getId());
         assertEquals(SEGUNDO_ID_ESPERADO, segundo.getId());
@@ -41,13 +41,13 @@ public class PruebasEscuelasYCreador {
     @Test
     public void laEscuelaPreparaAlCombatienteConSusTecnicasInicialesYCincoUsosCadaUna() {
         Escuela palacioDelVacio = new Escuela(
-                "Palacio del Vacío",
+                "Palacio del Vacio",
                 List.of(new DominioDeLaNada(), new MeditacionDelInmortal()),
                 List.<Equipamiento>of()
         );
         CreadorCombatientes creador = new CreadorCombatientes();
 
-        Combatiente nebula = creador.crear("Hechicero del Vacío", "Nébula", palacioDelVacio);
+        Combatiente nebula = creador.crear("Hechicero del Vacio", "Nebula", palacioDelVacio);
 
         assertEquals(CANTIDAD_TECNICAS_PALACIO, nebula.getTecnicasDisponibles().size());
         assertEquals(Combatiente.USOS_MAXIMOS_TECNICA, nebula.getUsosRestantes(new DominioDeLaNada()));

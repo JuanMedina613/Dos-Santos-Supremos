@@ -16,9 +16,9 @@ public class InicioCombate extends Acontecimiento {
 	
 	private static String formatearDescripcion(int ronda, Pareja pareja1, Pareja pareja2) {
         if (pareja1 == null || pareja2 == null) {
-            throw new IllegalArgumentException("Las parejas del combate no pueden ser nulas.");
+            throw new IllegalArgumentException("Las parejas del combate no pueden ser nulas");
         }
-        return "Ronda " + ronda + " - Comienza el combate entre " + pareja1 + " y " + pareja2 + ".";
+        return "Ronda " + ronda + " - Comienza el combate entre " + pareja1 + " y " + pareja2;
     }
 	
     public int getRonda() {

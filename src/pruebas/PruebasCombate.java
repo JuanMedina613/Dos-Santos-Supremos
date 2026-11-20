@@ -128,7 +128,7 @@ public class PruebasCombate {
         /*
          * Si un combatiente llega a cero de vida,
          * el motor debe excluirlo de los turnos
-         * y de la selección de objetivos.
+         * y de la seleccion de objetivos
          */
         for (Combatiente combatiente :
                 pareja1.getCombatientes()) {
@@ -173,10 +173,10 @@ public class PruebasCombate {
     public void anteEmpateDeVidaGanaLaParejaDeMenorId() {
 
         /*
-         * Combatientes que no hacen daño: el combate llega al límite
-         * de asaltos con la misma vida total en ambas parejas.
+         * Combatientes que no hacen daño: el combate llega al limite
+         * de asaltos con la misma vida total en ambas parejas
          * La pareja de mayor id se pasa primero para que el resultado
-         * no dependa del orden de los parámetros.
+         * no dependa del orden de los parametros
          */
         Pareja parejaMenorId = new Pareja(1,
                 new CombatienteSinDanio(1, "A"), new CombatienteSinDanio(2, "B"));
@@ -225,7 +225,7 @@ public class PruebasCombate {
         assertTrue(atacante.getEnergiaActual() < atacante.getEnergiaMaxima()
                 || atacante.getVidaActual() < atacante.getVidaMaxima());
 
-        // Es lo que hace Combate al comenzar el siguiente combate.
+        // Es lo que hace Combate al comenzar el siguiente combate
         parejaAtacante.restaurarParaNuevoCombate();
         parejaRival.restaurarParaNuevoCombate();
 
@@ -314,14 +314,14 @@ public class PruebasCombate {
         }
 
         assertTrue(indiceEliminacion >= 0,
-                "Debe registrarse la eliminacion del combatiente.");
+                "Debe registrarse la eliminacion del combatiente");
 
         for (int i = indiceEliminacion + 1; i < historial.size(); i++) {
             if (historial.get(i) instanceof AccionRealizada accion) {
                 assertNotEquals(primeroEnCaer, accion.getActor(),
-                        "Un caido no debe volver a actuar.");
+                        "Un caido no debe volver a actuar");
                 assertNotEquals(primeroEnCaer, accion.getObjetivo(),
-                        "Un caido no debe volver a ser objetivo.");
+                        "Un caido no debe volver a ser objetivo");
             }
         }
     }
@@ -538,8 +538,8 @@ public class PruebasCombate {
     public void siLeFaltaVidaPriorizaTecnicaDeRecuperacion() {
 
         /*
-         * La pareja rival tiene menor ID, por lo que actúa primero
-         * y daña al actor antes de que llegue su turno.
+         * La pareja rival tiene menor ID, por lo que actua primero
+         * y daña al actor antes de que llegue su turno
          */
         Combatiente rival =
                 new CultivadorDeLaEspada(1, "Rival");
@@ -580,8 +580,8 @@ public class PruebasCombate {
         combate.ejecutar();
 
         /*
-         * Buscamos la primera acción realizada específicamente
-         * por el actor.
+         * Buscamos la primera accion realizada especificamente
+         * por el actor
          */
         AccionRealizada accionDelActor =
                 cronista.obtenerHistorial()
@@ -651,15 +651,15 @@ public class PruebasCombate {
 
         /*
          * El primer atacante encuentra a ambos rivales
-         * con la misma vida.
+         * con la misma vida
          *
-         * Por desempate ataca al de menor ID: rival1.
+         * Por desempate ataca al de menor ID: rival1
          *
-         * Cuando actúa atacante2, rival1 ya tiene
-         * menos vida que rival2.
+         * Cuando actua atacante2, rival1 ya tiene
+         * menos vida que rival2
          *
-         * Por lo tanto atacante2 también debe elegir
-         * a rival1.
+         * Por lo tanto atacante2 tambien debe elegir
+         * a rival1
          */
         AccionRealizada accionDelSegundoAtacante =
                 cronista.obtenerHistorial()

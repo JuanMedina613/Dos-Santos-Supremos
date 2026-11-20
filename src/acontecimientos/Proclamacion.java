@@ -12,11 +12,11 @@ public class Proclamacion extends Acontecimiento {
 
     private static String formatearDescripcion(Pareja campeona) {
         if (campeona == null) {
-            throw new IllegalArgumentException("La pareja campeona no puede ser nula.");
+            throw new IllegalArgumentException("La pareja campeona no puede ser nula");
         }
-        return "¡Proclamación! " + campeona.getCombatiente1().getNombre()
+        return "Proclamacion! " + campeona.getCombatiente1().getNombre()
                 + " y " + campeona.getCombatiente2().getNombre()
-                + " (" + campeona + ") son los Dos Santos Supremos.";
+                + " (" + campeona + ") son los Dos Santos Supremos";
     }
 
     public Pareja getCampeona() {

@@ -1,7 +1,7 @@
 package combatientes;
 
 public class HechiceroDelVacio extends Combatiente {
-    private static final double FACTOR_COSTO_ENERGIA = 0.75; // Gasta 25% menos de energía
+    private static final double FACTOR_COSTO_ENERGIA = 0.75; // Gasta 25% menos de energia
 
     public HechiceroDelVacio(int id, String nombre) {
         super(id, nombre);

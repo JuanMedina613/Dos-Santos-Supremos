@@ -19,7 +19,7 @@ public class CronistaDeLaSecta implements EscuchadorAcontecimientos {
     @Override
     public void notificar(Acontecimiento acontecimiento) {
         if (acontecimiento == null) {
-            throw new IllegalArgumentException("El acontecimiento no puede ser nulo.");
+            throw new IllegalArgumentException("El acontecimiento no puede ser nulo");
         }
         historial.add(acontecimiento);
 

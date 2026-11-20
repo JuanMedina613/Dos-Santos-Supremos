@@ -8,10 +8,10 @@ public abstract class EfectoTemporal {
 
     protected EfectoTemporal(String nombre, int duracionTurnos) {
         if (nombre == null || nombre.isBlank()) {
-            throw new IllegalArgumentException("El nombre del efecto temporal no puede estar vacío.");
+            throw new IllegalArgumentException("El nombre del efecto temporal no puede estar vacio");
         }
         if (duracionTurnos <= 0) {
-            throw new IllegalArgumentException("La duración en turnos debe ser positiva.");
+            throw new IllegalArgumentException("La duracion en turnos debe ser positiva");
         }
         this.nombre = nombre;
         this.turnosRestantes = duracionTurnos;
@@ -31,7 +31,7 @@ public abstract class EfectoTemporal {
 
     public final void aplicarEnTurno(Combatiente afectado) {
         if (afectado == null) {
-            throw new IllegalArgumentException("El combatiente afectado no puede ser nulo.");
+            throw new IllegalArgumentException("El combatiente afectado no puede ser nulo");
         }
         if (estaFinalizado() || !afectado.estaEnPie()) {
             return;
@@ -46,6 +46,6 @@ public abstract class EfectoTemporal {
     protected abstract void ejecutarEfecto(Combatiente afectado);
 
     protected void alFinalizar(Combatiente afectado) {
-        // Hook opcional para efectos que deban revertir modificaciones al expirar.
+        // Hook opcional para efectos que deban revertir modificaciones al expirar
     }
 }

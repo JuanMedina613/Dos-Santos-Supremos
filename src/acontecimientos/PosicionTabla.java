@@ -9,7 +9,7 @@ public class PosicionTabla implements Comparable<PosicionTabla> {
 
     public PosicionTabla(Pareja pareja, int ultimaRonda, int vidaTotalFinal) {
         if (pareja == null) {
-            throw new IllegalArgumentException("La pareja no puede ser nula.");
+            throw new IllegalArgumentException("La pareja no puede ser nula");
         }
         this.pareja = pareja;
         this.ultimaRonda = ultimaRonda;
@@ -43,6 +43,6 @@ public class PosicionTabla implements Comparable<PosicionTabla> {
 
     @Override
     public String toString() {
-        return pareja + " | Última ronda: " + ultimaRonda + " | Vida total final: " + vidaTotalFinal;
+        return pareja + " | Ultima ronda: " + ultimaRonda + " | Vida total final: " + vidaTotalFinal;
     }
 }

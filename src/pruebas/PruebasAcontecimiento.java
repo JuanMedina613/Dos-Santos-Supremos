@@ -26,7 +26,7 @@ class PruebasAcontecimiento {
     @BeforeEach
     void setUp() {
         aurelio = new CultivadorDeLaEspada(1, "Aurelio");
-        nebula = new HechiceroDelVacio(2, "Nébula");
+        nebula = new HechiceroDelVacio(2, "Nebula");
         kael = new MonjeDelCuerpoCelestial(3, "Kael");
         darian = new CultivadorDeLaEspada(4, "Darian");
 
@@ -58,13 +58,13 @@ class PruebasAcontecimiento {
         assertTrue(ofensiva.getDescripcion().contains("Kael"));
 
         AccionRealizada propia = new AccionRealizada(
-                2, nebula, nebula, "Meditación del Inmortal", true);
-        assertTrue(propia.getDescripcion().contains("sobre sí mismo"));
+                2, nebula, nebula, "Meditacion del Inmortal", true);
+        assertTrue(propia.getDescripcion().contains("sobre si mismo"));
 
         AccionRealizada basico = new AccionRealizada(
-                3, darian, aurelio, "Ataque básico", false);
+                3, darian, aurelio, "Ataque basico", false);
         assertFalse(basico.isEsTecnica());
-        assertTrue(basico.getDescripcion().contains("ataque básico"));
+        assertTrue(basico.getDescripcion().contains("ataque basico"));
     }
 
     @Test

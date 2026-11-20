@@ -13,7 +13,7 @@ public class RugidoBestiaPrimordial extends Tecnica {
 
     @Override
     protected void aplicarEfecto(Combatiente ejecutor, Combatiente objetivo) {
-        Objects.requireNonNull(objetivo, "El objetivo no puede ser nulo.");
+        Objects.requireNonNull(objetivo, "El objetivo no puede ser nulo");
         int danioFinal = ejecutor.calcularDanioProducido(DANIO_BASE);
         objetivo.recibirDanio(danioFinal);
     }

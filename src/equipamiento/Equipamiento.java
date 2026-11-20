@@ -6,10 +6,10 @@ public abstract class Equipamiento {
 
     public Equipamiento(String nombre, CategoriaEquipamiento categoria) {
         if (nombre == null || nombre.isBlank()) {
-            throw new IllegalArgumentException("El nombre del equipamiento no puede estar vacío.");
+            throw new IllegalArgumentException("El nombre del equipamiento no puede estar vacio");
         }
         if (categoria == null) {
-            throw new IllegalArgumentException("La categoría no puede ser nula.");
+            throw new IllegalArgumentException("La categoria no puede ser nula");
         }
         this.nombre = nombre;
         this.categoria = categoria;

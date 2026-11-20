@@ -33,7 +33,7 @@ public class TorneoDeLosInmortales {
 
     private static void ejecutarEscenarioCuatroParejas(HeraldoImperial heraldo) {
         heraldo.anunciar("=================================================================");
-        heraldo.anunciar(" ESCENARIO 1: TORNEO DE 4 PAREJAS (ESCUELAS CLÁSICAS Y EQUIPO)");
+        heraldo.anunciar(" ESCENARIO 1: TORNEO DE 4 PAREJAS (ESCUELAS CLASICAS Y EQUIPO)");
         heraldo.anunciar("=================================================================");
 
         Escuela escuelaDeLaEspada = new Escuela(
@@ -42,7 +42,7 @@ public class TorneoDeLosInmortales {
                 List.of(new EspadaCelestial(8)));
 
         Escuela palacioDelVacio = new Escuela(
-                "Palacio del Vacío",
+                "Palacio del Vacio",
                 List.of(new DominioDeLaNada(), new MeditacionDelInmortal()),
                 List.of(new AnilloEspiritual(15)));
 
@@ -55,14 +55,14 @@ public class TorneoDeLosInmortales {
 
         // Pareja 1
         Combatiente aurelio = creador.crear("Cultivador de la Espada", "Aurelio", escuelaDeLaEspada);
-        Combatiente nebula = creador.crear("Hechicero del Vacío", "Nébula", palacioDelVacio);
+        Combatiente nebula = creador.crear("Hechicero del Vacio", "Nebula", palacioDelVacio);
 
         // Pareja 2
         Combatiente kael = creador.crear("Monje del Cuerpo Celestial", "Kael", monasterioCuerpoDorado);
         Combatiente darian = creador.crear("Cultivador de la Espada", "Darian", escuelaDeLaEspada);
 
         // Pareja 3 (ajuste de equipamiento previo al torneo)
-        Combatiente lyra = creador.crear("Hechicero del Vacío", "Lyra", palacioDelVacio);
+        Combatiente lyra = creador.crear("Hechicero del Vacio", "Lyra", palacioDelVacio);
         lyra.equipar(new SelloDelFenix(15));
         Combatiente thorne = creador.crear("Monje del Cuerpo Celestial", "Thorne", monasterioCuerpoDorado);
         thorne.quitarEquipamientoPorCategoria(CategoriaEquipamiento.SELLO);
@@ -70,7 +70,7 @@ public class TorneoDeLosInmortales {
 
         // Pareja 4
         Combatiente soren = creador.crear("Cultivador de la Espada", "Soren", escuelaDeLaEspada);
-        Combatiente mira = creador.crear("Hechicero del Vacío", "Mira", palacioDelVacio);
+        Combatiente mira = creador.crear("Hechicero del Vacio", "Mira", palacioDelVacio);
 
         Torneo torneo = new Torneo();
         CronistaDeLaSecta cronista = new CronistaDeLaSecta();
@@ -94,12 +94,12 @@ public class TorneoDeLosInmortales {
         heraldo.anunciar("=================================================================");
 
         Escuela sectaVenenoSombrio = new Escuela(
-                "Secta del Veneno Sombrío",
+                "Secta del Veneno Sombrio",
                 List.of(new PalmaEnvenenada(), new CorteDeLosMilAmaneceres()),
                 List.of(new EspadaCelestial(5), new AnilloEspiritual(10)));
 
         Escuela jardinInmortal = new Escuela(
-                "Jardín de la Longevidad Inmortal",
+                "Jardin de la Longevidad Inmortal",
                 List.of(new AlientoVital(), new MuroDelCuerpoDorado()),
                 List.of(new ArmaduraDorada(4), new SelloDelFenix(25)));
 
@@ -109,7 +109,7 @@ public class TorneoDeLosInmortales {
                 List.of(new EspadaCelestial(7)));
 
         Escuela palacioDelVacio = new Escuela(
-                "Palacio del Vacío",
+                "Palacio del Vacio",
                 List.of(new DominioDeLaNada(), new MeditacionDelInmortal()),
                 List.of(new AnilloEspiritual(15)));
 
@@ -125,28 +125,28 @@ public class TorneoDeLosInmortales {
                 creador.crear("Monje del Cuerpo Celestial", "Bao", jardinInmortal)));
 
         torneo.inscribir(new Pareja(2,
-                creador.crear("Hechicero del Vacío", "Zhen", palacioDelVacio),
+                creador.crear("Hechicero del Vacio", "Zhen", palacioDelVacio),
                 creador.crear("Cultivador de la Espada", "Lin", escuelaDeLaEspada)));
 
         torneo.inscribir(new Pareja(3,
                 creador.crear("Monje del Cuerpo Celestial", "Wei", jardinInmortal),
-                creador.crear("Hechicero del Vacío", "Xue", sectaVenenoSombrio)));
+                creador.crear("Hechicero del Vacio", "Xue", sectaVenenoSombrio)));
 
         torneo.inscribir(new Pareja(4,
                 creador.crear("Cultivador de la Espada", "Feng", escuelaDeLaEspada),
                 creador.crear("Monje del Cuerpo Celestial", "Hao", jardinInmortal)));
 
         torneo.inscribir(new Pareja(5,
-                creador.crear("Hechicero del Vacío", "Mei", palacioDelVacio),
+                creador.crear("Hechicero del Vacio", "Mei", palacioDelVacio),
                 creador.crear("Cultivador de la Espada", "Jun", sectaVenenoSombrio)));
 
         torneo.inscribir(new Pareja(6,
                 creador.crear("Monje del Cuerpo Celestial", "Rui", jardinInmortal),
-                creador.crear("Hechicero del Vacío", "Lan", palacioDelVacio)));
+                creador.crear("Hechicero del Vacio", "Lan", palacioDelVacio)));
 
         torneo.inscribir(new Pareja(7,
                 creador.crear("Cultivador de la Espada", "Tao", escuelaDeLaEspada),
-                creador.crear("Hechicero del Vacío", "Yun", sectaVenenoSombrio)));
+                creador.crear("Hechicero del Vacio", "Yun", sectaVenenoSombrio)));
 
         torneo.inscribir(new Pareja(8,
                 creador.crear("Monje del Cuerpo Celestial", "Long", jardinInmortal),

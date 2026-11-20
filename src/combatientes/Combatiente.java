@@ -27,7 +27,7 @@ public abstract class Combatiente {
     private int vidaActual;
     private int energiaActual;
 
-    // Reducción de daño temporal durante el combate (ej. Muro del Cuerpo Dorado)
+    // Reduccion de daño temporal durante el combate (ej. Muro del Cuerpo Dorado)
     private int reduccionDanioCombate;
     
     private final List<EfectoTemporal> efectosTemporales;
@@ -35,10 +35,10 @@ public abstract class Combatiente {
     private final List<Equipamiento> equipamientos;
     private final Map<Tecnica, Integer> usosPorTecnica;
 
-    // Constructor único y limpio (el ID lo provee el CreadorCombatientes)
+    // Constructor unico y limpio (el ID lo provee el CreadorCombatientes)
     public Combatiente(int id, String nombre) {
         if (nombre == null || nombre.isBlank()) {
-            throw new IllegalArgumentException("El nombre del combatiente no puede estar vacio.");
+            throw new IllegalArgumentException("El nombre del combatiente no puede estar vacio");
         }
         this.id = id;
         this.nombre = nombre;
@@ -53,11 +53,11 @@ public abstract class Combatiente {
 
     }
 
-    // ACA VAMOS A MANERJAR LAS TECNICAS GESTIÓN DE TECNICAS
+    // ACA VAMOS A MANEJAR LAS TECNICAS GESTION DE TECNICAS
 
     public void aprenderTecnica(Tecnica tecnica) {
         if (tecnica == null) {
-            throw new NullPointerException("La técnica no puede ser nula.");
+            throw new NullPointerException("La tecnica no puede ser nula");
         }
         usosPorTecnica.putIfAbsent(tecnica, USOS_MAXIMOS_TECNICA);
     }
@@ -69,7 +69,7 @@ public abstract class Combatiente {
     public void consumirUsoTecnica(Tecnica tecnica) {
  
         if (getUsosRestantes(tecnica) <= 0) {
-            throw new IllegalStateException("No quedan usos disponibles para la técnica: " + tecnica.getNombre());
+            throw new IllegalStateException("No quedan usos disponibles para la tecnica: " + tecnica.getNombre());
         }
         usosPorTecnica.put(tecnica, getUsosRestantes(tecnica) - 1);
     }
@@ -82,11 +82,11 @@ public abstract class Combatiente {
 
     public void equipar(Equipamiento nuevoEquipamiento) {
     	if (nuevoEquipamiento == null) {
-            throw new IllegalArgumentException("El equipamiento no puede ser nulo.");
+            throw new IllegalArgumentException("El equipamiento no puede ser nulo");
         }
 
         if (equipamientos.size() >= MAX_EQUIPAMIENTOS) {
-            throw new ReglaEquipamientoException("No se pueden llevar mas de " + MAX_EQUIPAMIENTOS + " equipamientos.");
+            throw new ReglaEquipamientoException("No se pueden llevar mas de " + MAX_EQUIPAMIENTOS + " equipamientos");
         }
 
         for (Equipamiento equipoPuesto : equipamientos) {
@@ -99,11 +99,11 @@ public abstract class Combatiente {
 
     public void quitarEquipamiento(Equipamiento equipamiento) {
     	if (equipamiento == null) {
-            throw new IllegalArgumentException("El equipamiento a quitar no puede ser nulo.");
+            throw new IllegalArgumentException("El equipamiento a quitar no puede ser nulo");
         }
 
     	if (!equipamientos.contains(equipamiento)) {
-            throw new ReglaEquipamientoException("El combatiente no lleva puesto ese equipamiento.");
+            throw new ReglaEquipamientoException("El combatiente no lleva puesto ese equipamiento");
         }
     	
     	equipamientos.remove(equipamiento);
@@ -196,7 +196,7 @@ public abstract class Combatiente {
     public void gastarEnergia(int costoBaseTecnica) {
    
         if (this.energiaActual < calcularCostoEnergia(costoBaseTecnica)) {
-            throw new IllegalStateException("Energía insuficiente para ejecutar la técnica.");
+            throw new IllegalStateException("Energia insuficiente para ejecutar la tecnica");
         }
         this.energiaActual -= calcularCostoEnergia(costoBaseTecnica);
     }
@@ -240,7 +240,7 @@ public abstract class Combatiente {
         this.efectosTemporales.clear();
     }
 
-    // --- HOOKS POLIMÓRFICOS PARA LAS SUBCLASES ---
+    // --- HOOKS POLIMORFICOS PARA LAS SUBCLASES ---
 
     protected int aplicarPotenciacionPorEspecialidad(int danio) {
         return danio;
@@ -287,7 +287,7 @@ public abstract class Combatiente {
     
     public void aplicarEfectoTemporal(EfectoTemporal nuevoEfecto) {
         if (nuevoEfecto == null) {
-            throw new IllegalArgumentException("El efecto temporal no puede ser nulo.");
+            throw new IllegalArgumentException("El efecto temporal no puede ser nulo");
         }
         if (!estaEnPie()) {
             return;

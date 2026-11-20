@@ -6,7 +6,7 @@ public class EspadaCelestial extends Equipamiento {
     public EspadaCelestial(int bonoDanio) {
         super("Espada Celestial", CategoriaEquipamiento.ARMA);
         if (bonoDanio <= 0) {
-            throw new IllegalArgumentException("El bono de daño debe ser positivo.");
+            throw new IllegalArgumentException("El bono de danio debe ser positivo");
         }
         this.bonoDanio = bonoDanio;
     }
