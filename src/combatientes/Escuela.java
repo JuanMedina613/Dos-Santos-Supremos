@@ -5,7 +5,6 @@ import tecnicas.Tecnica;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 public class Escuela {
     private final String nombre;
@@ -16,8 +15,12 @@ public class Escuela {
         if (nombre == null || nombre.isBlank()) {
             throw new IllegalArgumentException("El nombre de la escuela no puede estar vacío.");
         }
-        Objects.requireNonNull(tecnicasIniciales, "La lista de técnicas no puede ser nula.");
-        Objects.requireNonNull(equipamientosIniciales, "La lista de equipamientos no puede ser nula.");
+        if (tecnicasIniciales == null) {
+            throw new NullPointerException("La lista de técnicas no puede ser nula.");
+        }
+        if (equipamientosIniciales == null) {
+            throw new NullPointerException("La lista de equipamientos no puede ser nula.");
+        }
 
         this.nombre = nombre;
         this.tecnicasIniciales = List.copyOf(tecnicasIniciales);

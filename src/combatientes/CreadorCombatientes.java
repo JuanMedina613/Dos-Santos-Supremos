@@ -5,7 +5,6 @@ import tecnicas.Tecnica;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.BiFunction;
 
 public class CreadorCombatientes {
@@ -25,7 +24,9 @@ public class CreadorCombatientes {
         if (nombreTipo == null || nombreTipo.isBlank()) {
             throw new IllegalArgumentException("El nombre del tipo no puede estar vacío.");
         }
-        Objects.requireNonNull(constructor, "El constructor no puede ser nulo.");
+        if (constructor == null) {
+            throw new NullPointerException("El constructor no puede ser nulo.");
+        }
         constructoresPorTipo.put(nombreTipo.trim(), constructor);
     }
 
@@ -33,7 +34,9 @@ public class CreadorCombatientes {
         if (tipo == null || tipo.isBlank()) {
             throw new IllegalArgumentException("El tipo de combatiente no puede estar vacío.");
         }
-        Objects.requireNonNull(escuela, "La escuela no puede ser nula.");
+        if (escuela == null) {
+            throw new NullPointerException("La escuela no puede ser nula.");
+        }
 
         BiFunction<Integer, String, Combatiente> constructor = constructoresPorTipo.get(tipo.trim());
         if (constructor == null) {

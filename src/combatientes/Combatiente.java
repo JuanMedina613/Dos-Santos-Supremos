@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import combate.EfectoTemporal;
 
@@ -57,7 +56,9 @@ public abstract class Combatiente {
     // ACA VAMOS A MANERJAR LAS TECNICAS GESTIÓN DE TECNICAS
 
     public void aprenderTecnica(Tecnica tecnica) {
-        Objects.requireNonNull(tecnica, "La técnica no puede ser nula.");
+        if (tecnica == null) {
+            throw new NullPointerException("La técnica no puede ser nula.");
+        }
         usosPorTecnica.putIfAbsent(tecnica, USOS_MAXIMOS_TECNICA);
     }
 
@@ -324,6 +325,6 @@ public abstract class Combatiente {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return 31 + id;
     }
 }
