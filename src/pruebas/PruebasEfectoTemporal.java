@@ -81,7 +81,7 @@ class PruebasEfectoTemporal {
                 .anyMatch(e -> e instanceof EfectoTemporalAplicado);
         assertTrue(huboEfectosTemporales);
 
-        // Al preparar un nuevo combate, ningún combatiente conserva efectos residuales
+        // Al preparar un nuevo combate, ningun combatiente conserva efectos residuales
         p1.restaurarParaNuevoCombate();
         p2.restaurarParaNuevoCombate();
         assertTrue(envenenador.getEfectosTemporalesActivos().isEmpty());

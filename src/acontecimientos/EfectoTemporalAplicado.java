@@ -26,15 +26,15 @@ public class EfectoTemporalAplicado extends Acontecimiento {
             String nombreEfecto,
             int turnosRestantes) {
         if (afectado == null) {
-            throw new IllegalArgumentException("El combatiente afectado no puede ser nulo.");
+            throw new IllegalArgumentException("El combatiente afectado no puede ser nulo");
         }
         if (nombreEfecto == null || nombreEfecto.isBlank()) {
-            throw new IllegalArgumentException("El nombre del efecto no puede estar vacío.");
+            throw new IllegalArgumentException("El nombre del efecto no puede estar vacio");
         }
         return "Asalto " + asalto + ": " + afectado.getNombre()
                 + " sufre el efecto de " + nombreEfecto
                 + " (Vida actual: " + afectado.getVidaActual() + "/" + afectado.getVidaMaxima()
-                + ", turnos restantes: " + turnosRestantes + ").";
+                + ", turnos restantes: " + turnosRestantes + ")";
     }
 
     public int getAsalto() {

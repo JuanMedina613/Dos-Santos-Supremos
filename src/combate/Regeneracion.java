@@ -6,9 +6,9 @@ public class Regeneracion extends EfectoTemporal {
     private final int curacionPorTurno;
 
     public Regeneracion(int curacionPorTurno, int duracionTurnos) {
-        super("Regeneración", duracionTurnos);
+        super("Regeneracion", duracionTurnos);
         if (curacionPorTurno <= 0) {
-            throw new IllegalArgumentException("La curación por turno debe ser positiva.");
+            throw new IllegalArgumentException("La curacion por turno debe ser positiva");
         }
         this.curacionPorTurno = curacionPorTurno;
     }

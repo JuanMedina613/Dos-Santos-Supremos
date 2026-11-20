@@ -29,12 +29,12 @@ public class Combate {
 
         if (pareja1 == null || pareja2 == null) {
             throw new IllegalArgumentException(
-                    "Las parejas del combate no pueden ser nulas.");
+                    "Las parejas del combate no pueden ser nulas");
         }
 
         if (pareja1.equals(pareja2)) {
             throw new IllegalArgumentException(
-                    "Una pareja no puede combatir contra sí misma.");
+                    "Una pareja no puede combatir contra si misma");
         }
 
         this.pareja1 = pareja1;
@@ -44,7 +44,7 @@ public class Combate {
     }
 
     public void agregarEscuchador(EscuchadorAcontecimientos escuchador) {
-        if (escuchador == null) throw new IllegalArgumentException("El escuchador no puede ser nulo.");
+        if (escuchador == null) throw new IllegalArgumentException("El escuchador no puede ser nulo");
         if (!escuchadores.contains(escuchador)) escuchadores.add(escuchador);
     }
 
@@ -192,7 +192,7 @@ public class Combate {
         List<Tecnica> disponibles =
                 actor.getTecnicasDisponibles();
 
-        // 1. Recuperación si le falta vida.
+        // 1. Recuperacion si le falta vida
         if (actor.getVidaActual() < actor.getVidaMaxima()) {
 
             Tecnica recuperacion =
@@ -207,7 +207,7 @@ public class Combate {
             }
         }
 
-        // 2. Defensiva si no tiene una defensa activa.
+        // 2. Defensiva si no tiene una defensa activa
         if (actor.getReduccionDanioCombate() == 0) {
 
             Tecnica defensiva =
@@ -222,7 +222,7 @@ public class Combate {
             }
         }
 
-        // 3. Ofensiva con más usos restantes.
+        // 3. Ofensiva con mas usos restantes
         Tecnica mejorOfensiva = null;
         int mayorCantidadUsos = -1;
 
@@ -310,7 +310,7 @@ public class Combate {
                 )
                 .orElseThrow(() ->
                         new IllegalStateException(
-                                "No existen rivales en pie."));
+                                "No existen rivales en pie"));
     }
 
     private Pareja determinarGanadora() {
@@ -335,7 +335,7 @@ public class Combate {
         }
 
         // Desempate indicado por la consigna:
-        // gana la pareja de menor identificador.
+        // gana la pareja de menor identificador
         return pareja1.getId() < pareja2.getId()
                 ? pareja1
                 : pareja2;

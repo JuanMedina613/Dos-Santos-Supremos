@@ -7,7 +7,7 @@ public class MeditacionDelInmortal extends Tecnica {
     public static final int CURACION_BASE = 25;
 
     public MeditacionDelInmortal() {
-        super("Meditación del Inmortal", COSTO_ENERGIA, TipoTecnica.RECUPERACION);
+        super("Meditacion del Inmortal", COSTO_ENERGIA, TipoTecnica.RECUPERACION);
     }
 
     @Override

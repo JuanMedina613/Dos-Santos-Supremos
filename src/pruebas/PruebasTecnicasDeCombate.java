@@ -50,7 +50,7 @@ public class PruebasTecnicasDeCombate {
     @Test
     public void elHechiceroDelVacioGastaMenosEnergiaAlEjecutarTecnicas() {
         Tecnica rugido = new RugidoBestiaPrimordial();
-        Combatiente hechicero = new HechiceroDelVacio(ID_EJECUTANTE, "Nébula");
+        Combatiente hechicero = new HechiceroDelVacio(ID_EJECUTANTE, "Nebula");
         Combatiente rival = new CombatienteDePrueba(ID_PRIMER_RIVAL, "Rival");
 
         hechicero.aprenderTecnica(rugido);

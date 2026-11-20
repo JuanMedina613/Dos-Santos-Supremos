@@ -16,26 +16,26 @@ public class CreadorCombatientes {
         // Registro de los 3 tipos iniciales pedidos en el TP
         registrarTipo("Cultivador de la Espada", CultivadorDeLaEspada::new);
         registrarTipo("Monje del Cuerpo Celestial", MonjeDelCuerpoCelestial::new);
-        registrarTipo("Hechicero del Vacío", HechiceroDelVacio::new);
+        registrarTipo("Hechicero del Vacio", HechiceroDelVacio::new);
     }
 
     // Permite agregar nuevos tipos en el futuro sin modificar esta clase (Principio Abierto/Cerrado)
     public final void registrarTipo(String nombreTipo, BiFunction<Integer, String, Combatiente> constructor) {
         if (nombreTipo == null || nombreTipo.isBlank()) {
-            throw new IllegalArgumentException("El nombre del tipo no puede estar vacío.");
+            throw new IllegalArgumentException("El nombre del tipo no puede estar vacio");
         }
         if (constructor == null) {
-            throw new NullPointerException("El constructor no puede ser nulo.");
+            throw new NullPointerException("El constructor no puede ser nulo");
         }
         constructoresPorTipo.put(nombreTipo.trim(), constructor);
     }
 
     public Combatiente crear(String tipo, String nombre, Escuela escuela) {
         if (tipo == null || tipo.isBlank()) {
-            throw new IllegalArgumentException("El tipo de combatiente no puede estar vacío.");
+            throw new IllegalArgumentException("El tipo de combatiente no puede estar vacio");
         }
         if (escuela == null) {
-            throw new NullPointerException("La escuela no puede ser nula.");
+            throw new NullPointerException("La escuela no puede ser nula");
         }
 
         BiFunction<Integer, String, Combatiente> constructor = constructoresPorTipo.get(tipo.trim());
@@ -43,11 +43,11 @@ public class CreadorCombatientes {
             throw new IllegalArgumentException("Tipo de combatiente desconocido: " + tipo);
         }
 
-        // 1. Instanciar el combatiente con su ID único en orden de creación
+        // 1. Instanciar el combatiente con su ID unico en orden de creacion
         int idAsignado = siguienteId++;
         Combatiente nuevo = constructor.apply(idAsignado, nombre);
 
-        // 2. Prepararlo según la filosofía de su Escuela (equipamiento y técnicas iniciales)
+        // 2. Prepararlo segun la filosofia de su Escuela (equipamiento y tecnicas iniciales)
         for (Equipamiento item : escuela.getEquipamientosIniciales()) {
             nuevo.equipar(item);
         }

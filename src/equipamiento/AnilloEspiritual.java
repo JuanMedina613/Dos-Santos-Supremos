@@ -6,7 +6,7 @@ public class AnilloEspiritual extends Equipamiento {
     public AnilloEspiritual(int bonoEnergiaMaxima) {
         super("Anillo Espiritual", CategoriaEquipamiento.ANILLO);
         if (bonoEnergiaMaxima <= 0) {
-            throw new IllegalArgumentException("El bono de energía máxima debe ser positivo.");
+            throw new IllegalArgumentException("El bono de energia maxima debe ser positivo");
         }
         this.bonoEnergiaMaxima = bonoEnergiaMaxima;
     }

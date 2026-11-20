@@ -193,12 +193,12 @@ public class PruebasTorneo {
         assertEquals(campeonaPrimero.getId(), campeonaSegundo.getId());
     }
 
-    /** Arma siempre el mismo torneo con escuelas, técnicas y equipamiento. */
+    /** Arma siempre el mismo torneo con escuelas, tecnicas y equipamiento */
     private Torneo torneoConEscuelas(CronistaDeLaSecta cronista) {
         Escuela espada = new Escuela("Escuela de la Espada Celestial",
                 List.of(new CorteDeLosMilAmaneceres(), new RugidoBestiaPrimordial()),
                 List.of(new EspadaCelestial(8)));
-        Escuela vacio = new Escuela("Palacio del Vacío",
+        Escuela vacio = new Escuela("Palacio del Vacio",
                 List.of(new DominioDeLaNada(), new MeditacionDelInmortal()),
                 List.of(new AnilloEspiritual(15)));
         Escuela monasterio = new Escuela("Monasterio del Cuerpo Dorado",
@@ -210,16 +210,16 @@ public class PruebasTorneo {
         torneo.agregarEscuchador(cronista);
         torneo.inscribir(new Pareja(1,
                 creador.crear("Cultivador de la Espada", "Aurelio", espada),
-                creador.crear("Hechicero del Vacío", "Nébula", vacio)));
+                creador.crear("Hechicero del Vacio", "Nebula", vacio)));
         torneo.inscribir(new Pareja(2,
                 creador.crear("Monje del Cuerpo Celestial", "Kael", monasterio),
                 creador.crear("Cultivador de la Espada", "Darian", espada)));
         torneo.inscribir(new Pareja(3,
-                creador.crear("Hechicero del Vacío", "Lyra", vacio),
+                creador.crear("Hechicero del Vacio", "Lyra", vacio),
                 creador.crear("Monje del Cuerpo Celestial", "Thorne", monasterio)));
         torneo.inscribir(new Pareja(4,
                 creador.crear("Cultivador de la Espada", "Soren", espada),
-                creador.crear("Hechicero del Vacío", "Mira", vacio)));
+                creador.crear("Hechicero del Vacio", "Mira", vacio)));
         return torneo;
     }
 
@@ -233,7 +233,7 @@ public class PruebasTorneo {
 
         assertEquals(campeonaPrimero.getId(), campeonaSegundo.getId());
 
-        // Se comparan las descripciones: la fecha y hora cambia en cada ejecución.
+        // Se comparan las descripciones: la fecha y hora cambia en cada ejecucion
         List<String> historialPrimero = cronistaPrimero.obtenerHistorial().stream()
                 .map(Acontecimiento::getDescripcion).toList();
         List<String> historialSegundo = cronistaSegundo.obtenerHistorial().stream()
@@ -277,7 +277,7 @@ public class PruebasTorneo {
                 combatesAbiertos++;
             } else if (acontecimiento instanceof ResultadoCombate) {
                 assertTrue(combatesAbiertos > 0,
-                        "No puede existir un resultado sin inicio previo.");
+                        "No puede existir un resultado sin inicio previo");
                 combatesAbiertos--;
             }
         }

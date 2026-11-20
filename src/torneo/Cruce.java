@@ -21,22 +21,22 @@ public class Cruce {
     public Cruce(int ronda, int orden, Pareja pareja1, Pareja pareja2) {
         if (ronda <= 0 || orden <= 0) {
             throw new IllegalArgumentException(
-                    "Ronda y orden deben ser positivos.");
+                    "Ronda y orden deben ser positivos");
         }
 
         if (pareja1 == null) {
             throw new NullPointerException(
-                    "La primera pareja no puede ser nula.");
+                    "La primera pareja no puede ser nula");
         }
 
         if (pareja2 == null) {
             throw new NullPointerException(
-                    "La segunda pareja no puede ser nula.");
+                    "La segunda pareja no puede ser nula");
         }
 
         if (pareja1.equals(pareja2)) {
             throw new IllegalArgumentException(
-                    "Una pareja no puede enfrentarse consigo misma.");
+                    "Una pareja no puede enfrentarse consigo misma");
         }
 
         this.ronda = ronda;
@@ -48,7 +48,7 @@ public class Cruce {
     public void agregarEscuchador(EscuchadorAcontecimientos escuchador) {
     	if (escuchador == null) {
             throw new NullPointerException(
-                    "El escuchador no puede ser nulo.");
+                    "El escuchador no puede ser nulo");
         }
 
         if (!escuchadores.contains(escuchador)) {
@@ -61,7 +61,7 @@ public class Cruce {
     }
 
     public Pareja ejecutar() {
-        if (ganadora != null) throw new IllegalStateException("El cruce ya fue ejecutado.");
+        if (ganadora != null) throw new IllegalStateException("El cruce ya fue ejecutado");
         notificar(new InicioCombate(ronda, pareja1, pareja2));
         combate = new Combate(pareja1, pareja2);
         for (EscuchadorAcontecimientos e : escuchadores) combate.agregarEscuchador(e);

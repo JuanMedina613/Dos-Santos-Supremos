@@ -13,13 +13,13 @@ public class Escuela {
 
     public Escuela(String nombre, List<Tecnica> tecnicasIniciales, List<Equipamiento> equipamientosIniciales) {
         if (nombre == null || nombre.isBlank()) {
-            throw new IllegalArgumentException("El nombre de la escuela no puede estar vacío.");
+            throw new IllegalArgumentException("El nombre de la escuela no puede estar vacio");
         }
         if (tecnicasIniciales == null) {
-            throw new NullPointerException("La lista de técnicas no puede ser nula.");
+            throw new NullPointerException("La lista de tecnicas no puede ser nula");
         }
         if (equipamientosIniciales == null) {
-            throw new NullPointerException("La lista de equipamientos no puede ser nula.");
+            throw new NullPointerException("La lista de equipamientos no puede ser nula");
         }
 
         this.nombre = nombre;

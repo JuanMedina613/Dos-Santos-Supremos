@@ -30,24 +30,24 @@ public class AccionRealizada extends Acontecimiento {
             String nombreAccion,
             boolean esTecnica) {
         if (actor == null) {
-            throw new IllegalArgumentException("El combatiente actor no puede ser nulo.");
+            throw new IllegalArgumentException("El combatiente actor no puede ser nulo");
         }
         if (objetivo == null) {
-            throw new IllegalArgumentException("El combatiente objetivo no puede ser nulo.");
+            throw new IllegalArgumentException("El combatiente objetivo no puede ser nulo");
         }
         if (nombreAccion == null || nombreAccion.isBlank()) {
-            throw new IllegalArgumentException("El nombre de la acción no puede estar vacío.");
+            throw new IllegalArgumentException("El nombre de la accion no puede estar vacio");
         }
 
-        String tipo = esTecnica ? "la técnica '" + nombreAccion + "'" : "un ataque básico";
+        String tipo = esTecnica ? "la tecnica '" + nombreAccion + "'" : "un ataque basico";
         if (actor.equals(objetivo)) {
             return "Asalto " + asalto + ": " + actor.getNombre()
-                    + " ejecuta " + tipo + " sobre sí mismo (Vida: "
-                    + actor.getVidaActual() + "/" + actor.getVidaMaxima() + ").";
+                    + " ejecuta " + tipo + " sobre si mismo (Vida: "
+                    + actor.getVidaActual() + "/" + actor.getVidaMaxima() + ")";
         }
         return "Asalto " + asalto + ": " + actor.getNombre()
                 + " ejecuta " + tipo + " sobre " + objetivo.getNombre()
-                + " (Vida restante de " + objetivo.getNombre() + ": " + objetivo.getVidaActual() + ").";
+                + " (Vida restante de " + objetivo.getNombre() + ": " + objetivo.getVidaActual() + ")";
     }
 
     public int getAsalto() {

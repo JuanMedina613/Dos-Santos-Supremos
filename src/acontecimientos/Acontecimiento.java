@@ -12,7 +12,7 @@ public abstract class Acontecimiento {
 
     protected Acontecimiento(String descripcion) {
         if (descripcion == null || descripcion.isBlank()) {
-            throw new IllegalArgumentException("La descripción del acontecimiento no puede estar vacía.");
+            throw new IllegalArgumentException("La descripcion del acontecimiento no puede estar vacia");
         }
         this.fechaHora = LocalDateTime.now().format(FORMATO_FECHA);
         this.descripcion = descripcion;

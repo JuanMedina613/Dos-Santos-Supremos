@@ -16,7 +16,7 @@ public class PalmaEnvenenada extends Tecnica {
     @Override
     protected void aplicarEfecto(Combatiente ejecutor, Combatiente objetivo) {
         if (objetivo == null) {
-            throw new IllegalArgumentException("El objetivo no puede ser nulo.");
+            throw new IllegalArgumentException("El objetivo no puede ser nulo");
         }
         int danioFinal = ejecutor.calcularDanioProducido(DANIO_INICIAL);
         objetivo.recibirDanio(danioFinal);

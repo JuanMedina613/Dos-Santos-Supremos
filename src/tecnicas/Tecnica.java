@@ -10,14 +10,14 @@ public abstract class Tecnica {
 
     public Tecnica(String nombre, int costoEnergia, TipoTecnica tipo) {
         if (nombre == null || nombre.isBlank()) {
-            throw new IllegalArgumentException("El nombre de la técnica no puede estar vacío.");
+            throw new IllegalArgumentException("El nombre de la tecnica no puede estar vacio");
         }
         if (costoEnergia < 0) {
-            throw new IllegalArgumentException("El costo de energía no puede ser negativo.");
+            throw new IllegalArgumentException("El costo de energia no puede ser negativo");
         }
         this.nombre = nombre;
         this.costoEnergia = costoEnergia;
-        this.tipo = Objects.requireNonNull(tipo, "El tipo de técnica no puede ser nulo.");
+        this.tipo = Objects.requireNonNull(tipo, "El tipo de tecnica no puede ser nulo");
     }
 
     public String getNombre() {
@@ -45,15 +45,15 @@ public abstract class Tecnica {
     }
 
     public final void aplicar(Combatiente ejecutor, Combatiente objetivo) {
-        Objects.requireNonNull(ejecutor, "El ejecutor no puede ser nulo.");
+        Objects.requireNonNull(ejecutor, "El ejecutor no puede ser nulo");
         if (!ejecutor.estaEnPie()) {
-            throw new IllegalStateException("Un combatiente fuera de combate no puede ejecutar técnicas.");
+            throw new IllegalStateException("Un combatiente fuera de combate no puede ejecutar tecnicas");
         }
         if (ejecutor.getUsosRestantes(this) <= 0) {
-            throw new IllegalStateException("No quedan usos disponibles para la técnica: " + nombre);
+            throw new IllegalStateException("No quedan usos disponibles para la tecnica: " + nombre);
         }
         if (!ejecutor.tieneEnergiaSuficiente(costoEnergia)) {
-            throw new IllegalStateException("Energía insuficiente para ejecutar la técnica: " + nombre);
+            throw new IllegalStateException("Energia insuficiente para ejecutar la tecnica: " + nombre);
         }
 
         ejecutor.gastarEnergia(costoEnergia);

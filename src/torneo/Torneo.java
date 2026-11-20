@@ -20,7 +20,7 @@ public class Torneo {
 
     private final List<List<Cruce>> rondas;
 
-    // Observadores del torneo: Cronista, Heraldo, etc.
+    // Observadores del torneo: Cronista, Heraldo, etc
     private final List<EscuchadorAcontecimientos> escuchadores;
 
     private boolean iniciado;
@@ -42,7 +42,7 @@ public class Torneo {
 
         if (escuchador == null) {
             throw new NullPointerException(
-                    "El escuchador no puede ser nulo."
+                    "El escuchador no puede ser nulo"
             );
         }
 
@@ -74,25 +74,25 @@ public class Torneo {
         if (iniciado) {
             throw new IllegalStateException(
                     "No se pueden registrar parejas " +
-                    "una vez iniciado el torneo."
+                    "una vez iniciado el torneo"
             );
         }
 
         if (pareja == null) {
             throw new InscripcionInvalidaException(
-                    "La pareja no puede ser nula."
+                    "La pareja no puede ser nula"
             );
         }
 
         if (parejasInscriptas.size() >= 8) {
             throw new InscripcionInvalidaException(
-                    "El torneo admite como máximo ocho parejas."
+                    "El torneo admite como maximo ocho parejas"
             );
         }
 
         if (parejasRegistradas.contains(pareja)) {
             throw new InscripcionInvalidaException(
-                    "La pareja ya está inscripta."
+                    "La pareja ya esta inscripta"
             );
         }
 
@@ -102,8 +102,8 @@ public class Torneo {
             if (combatientesRegistrados.contains(combatiente)) {
 
                 throw new InscripcionInvalidaException(
-                        "El combatiente ya está inscripto " +
-                        "en otra pareja."
+                        "El combatiente ya esta inscripto " +
+                        "en otra pareja"
                 );
             }
         }
@@ -116,13 +116,13 @@ public class Torneo {
         );
     }
 
-    // -------- EJECUCIÓN DEL TORNEO --------
+    // -------- EJECUCION DEL TORNEO --------
 
     public Pareja iniciar() {
 
         if (iniciado) {
             throw new IllegalStateException(
-                    "El torneo ya fue iniciado."
+                    "El torneo ya fue iniciado"
             );
         }
 
@@ -158,9 +158,9 @@ public class Torneo {
                 );
 
                 /*
-                 * Los observadores del torneo también
+                 * Los observadores del torneo tambien
                  * deben escuchar lo que ocurre
-                 * dentro de cada cruce.
+                 * dentro de cada cruce
                  */
                 for (EscuchadorAcontecimientos escuchador
                         : escuchadores) {
@@ -188,7 +188,7 @@ public class Torneo {
 
         campeona = participantes.get(0);
 
-        // Último acontecimiento del torneo
+        // Ultimo acontecimiento del torneo
         notificar(
                 new Proclamacion(campeona)
         );
@@ -204,7 +204,7 @@ public class Torneo {
 
             throw new InscripcionInvalidaException(
                     "El torneo debe iniciarse " +
-                    "con exactamente 4 u 8 parejas."
+                    "con exactamente 4 u 8 parejas"
             );
         }
     }
@@ -232,7 +232,7 @@ public class Torneo {
                 || numeroRonda > rondas.size()) {
 
             throw new IllegalArgumentException(
-                    "Número de ronda inexistente."
+                    "Numero de ronda inexistente"
             );
         }
 

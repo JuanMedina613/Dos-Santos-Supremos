@@ -6,7 +6,7 @@ public class ArmaduraDorada extends Equipamiento {
     public ArmaduraDorada(int reduccionDanio) {
         super("Armadura Dorada", CategoriaEquipamiento.ARMADURA);
         if (reduccionDanio <= 0) {
-            throw new IllegalArgumentException("La reducción de daño debe ser positiva.");
+            throw new IllegalArgumentException("La reduccion de danio debe ser positiva");
         }
         this.reduccionDanio = reduccionDanio;
     }
