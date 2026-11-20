@@ -1,5 +1,9 @@
 package combate;
 
+import acontecimientos.AccionRealizada;
+import acontecimientos.Acontecimiento;
+import acontecimientos.Eliminacion;
+import acontecimientos.EscuchadorAcontecimientos;
 import combatientes.Combatiente;
 import tecnicas.Tecnica;
 import torneo.Pareja;
@@ -18,6 +22,7 @@ public class Combate {
 
     private int numeroAsalto;
     private Pareja ganadora;
+    private final List<EscuchadorAcontecimientos> escuchadores;
 
     public Combate(Pareja pareja1, Pareja pareja2) {
 
@@ -34,6 +39,22 @@ public class Combate {
         this.pareja1 = pareja1;
         this.pareja2 = pareja2;
         this.numeroAsalto = 0;
+        this.escuchadores = new ArrayList<>();
+    }
+
+    public void agregarEscuchador(EscuchadorAcontecimientos escuchador) {
+        if (escuchador == null) throw new IllegalArgumentException("El escuchador no puede ser nulo.");
+        if (!escuchadores.contains(escuchador)) escuchadores.add(escuchador);
+    }
+
+    public void quitarEscuchador(EscuchadorAcontecimientos escuchador) {
+        escuchadores.remove(escuchador);
+    }
+
+    private void notificar(Acontecimiento acontecimiento) {
+        for (EscuchadorAcontecimientos escuchador : new ArrayList<>(escuchadores)) {
+            escuchador.notificar(acontecimiento);
+        }
     }
 
     public Pareja ejecutar() {
@@ -128,7 +149,9 @@ public class Combate {
         Tecnica tecnica = elegirTecnica(actor, aliados);
 
         if (tecnica == null) {
-            ejecutarAtaqueBasico(actor, rivales);
+            Combatiente objetivo = ejecutarAtaqueBasico(actor, rivales);
+            notificar(new AccionRealizada(numeroAsalto, actor, objetivo, "Ataque basico", false));
+            notificarEliminacionSiCorresponde(objetivo, actor);
             return;
         }
 
@@ -142,6 +165,8 @@ public class Combate {
 
         tecnica.aplicar(actor, objetivo);
         aliados.registrarUsoDeTecnica(actor, tecnica);
+        notificar(new AccionRealizada(numeroAsalto, actor, objetivo, tecnica.getNombre(), true));
+        if (tecnica.esOfensiva()) notificarEliminacionSiCorresponde(objetivo, actor);
     }
 
     private Tecnica elegirTecnica(
@@ -240,7 +265,7 @@ public class Combate {
                 && aliados.puedeUsarTecnica(actor, tecnica);
     }
 
-    private void ejecutarAtaqueBasico(
+    private Combatiente ejecutarAtaqueBasico(
             Combatiente atacante,
             Pareja rivales) {
 
@@ -251,6 +276,11 @@ public class Combate {
                 atacante.calcularDanioAtaqueBasico();
 
         objetivo.recibirDanio(danio);
+        return objetivo;
+    }
+
+    private void notificarEliminacionSiCorresponde(Combatiente objetivo, Combatiente causante) {
+        if (!objetivo.estaEnPie()) notificar(new Eliminacion(numeroAsalto, objetivo, causante));
     }
 
     private Combatiente elegirObjetivo(Pareja rivales) {
