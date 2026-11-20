@@ -55,6 +55,14 @@ public class Pareja {
     public List<Combatiente> getCombatientes() {
         return List.of(combatiente1, combatiente2);
     }
+    
+    public Combatiente getCombatiente1() {
+		return this.combatiente1;
+    }
+    
+    public Combatiente getCombatiente2() {
+		return this.combatiente2;
+    }
 
     public List<Combatiente> getCombatientesEnPie() {
         List<Combatiente> combatientesEnPie = new ArrayList<>();
@@ -145,6 +153,17 @@ public class Pareja {
         combatiente1.restaurarParaNuevoCombate();
         combatiente2.restaurarParaNuevoCombate();
         limpiarBloqueosDeCombate();
+    }
+    
+    public int getVidaTotal() {
+        int total = 0;
+        if (combatiente1.estaEnPie()) {
+            total += combatiente1.getVidaActual();
+        }
+        if (combatiente2.estaEnPie()) {
+            total += combatiente2.getVidaActual();
+        }
+        return total;
     }
 
     @Override
